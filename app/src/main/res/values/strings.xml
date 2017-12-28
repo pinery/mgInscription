@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">铭工智能</string>
     <string name="warranty_reminder">您的设备每运行5000小时需做次保养，根据您设备的资料显示可能需要做保养了</string>
+    <string name="statistics_text">说明：开关状态由编号、开关名称、开关状态构成，开关状态氛围断开，闭合。</string>
 </resources>

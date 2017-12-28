@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginTop="20dip"
+            android:src="@mipmap/icon_top_list" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="65dip"
+            android:layout_marginBottom="10dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="10dip"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/content_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="XQ20170615-001"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="XQ20170615-001"
+                android:textColor="@color/black6"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="30dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/button_line_color_back6"
+            android:text="实时状态"
+            android:textColor="@color/black6"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0.2dip"
+        android:background="@color/alpha30" />
+</LinearLayout>

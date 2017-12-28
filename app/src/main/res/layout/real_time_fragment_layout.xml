@@ -23,6 +23,7 @@
             android:textSize="17sp" />
 
         <ImageView
+            android:id="@+id/drop_down_iv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:paddingLeft="20dip"
@@ -43,7 +44,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="170dip"
-                android:layout_marginTop="10dip"
                 android:background="@mipmap/bg_index_content">
 
                 <LinearLayout
@@ -100,7 +100,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -171,7 +170,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="110dip"
-                android:layout_marginTop="10dip">
+                android:layout_marginTop="5dip">
 
                 <ImageView
                     android:layout_width="match_parent"
