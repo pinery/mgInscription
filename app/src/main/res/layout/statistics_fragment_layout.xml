@@ -2,95 +2,186 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#efeef4"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:id="@+id/axis_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/axis_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="15dip"
-                android:gravity="right"
-                android:text="轴状态"
-                android:textColor="@color/black6"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:visibility="visible" />
-
-            <ImageView
-                android:id="@+id/axis_line_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="5dip"
-                android:layout_alignLeft="@+id/axis_tv"
-                android:layout_alignRight="@+id/axis_tv"
-                android:layout_below="@+id/axis_tv"
-                android:layout_marginLeft="5dip"
-                android:layout_marginRight="5dip"
-                android:layout_marginTop="3dip"
-                android:background="@drawable/text_line_color_636b8f" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/register_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/register_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dip"
-                android:gravity="right"
-                android:text="寄存器"
-                android:textColor="@color/black6"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:visibility="visible" />
-
-            <ImageView
-                android:id="@+id/register_line_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="5dip"
-                android:layout_alignLeft="@+id/register_tv"
-                android:layout_alignRight="@+id/register_tv"
-                android:layout_below="@+id/register_tv"
-                android:layout_marginLeft="5dip"
-                android:layout_marginRight="5dip"
-                android:layout_marginTop="3dip"
-                android:background="@drawable/text_line_color_636b8f"
-                android:visibility="invisible" />
-        </RelativeLayout>
-    </LinearLayout>
+        android:gravity="center_vertical|center"
+        android:text="统计"
+        android:textColor="@color/black6"
+        android:textSize="17sp"
+        android:textStyle="bold" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0.2dip"
         android:background="@color/alpha30" />
 
-    <include
-        android:id="@+id/statistics_left_axis_view"
-        layout="@layout/statistics_left_axis_view" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <include
-        android:id="@+id/statistics_right_register_view"
-        layout="@layout/statistics_right_register_view"
-        android:visibility="gone" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@mipmap/chart_color_1"
+                android:drawablePadding="5dip"
+                android:padding="10dip"
+                android:text="日产品排名（CPS）"
+                android:textColor="@color/black6"
+                android:textSize="14sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableLeft="@mipmap/chart_color_2"
+                android:drawablePadding="5dip"
+                android:padding="10dip"
+                android:text="工作时间（H）"
+                android:textColor="@color/black6"
+                android:textSize="14sp" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <lecho.lib.hellocharts.view.ColumnChartView
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="10dip" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dip"
+        android:layout_marginTop="15dip">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="90dip"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="25dip"
+            android:layout_marginRight="25dip"
+            android:background="@drawable/layout_bg_white_f7f6fb" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:background="@drawable/layout_bg_white_ffffff"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dip"
+                    android:text="365"
+                    android:textColor="#66658d"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="运行总时长"
+                    android:textColor="@color/black6"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="（H）"
+                    android:textColor="@color/black6"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dip"
+                    android:text="365"
+                    android:textColor="#66658d"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="生成总量"
+                    android:textColor="@color/black6"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="（件）"
+                    android:textColor="@color/black6"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dip"
+                    android:text="365"
+                    android:textColor="#66658d"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="工作效率"
+                    android:textColor="@color/black6"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="（%）"
+                    android:textColor="@color/black6"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
