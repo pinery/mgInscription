@@ -3,14 +3,15 @@ package com.cimcitech.mginscription.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.cimcitech.mginscription.MainActivity;
 import com.cimcitech.mginscription.R;
-import com.cimcitech.mginscription.utils.StatusBarUtils;
+import com.cimcitech.mginscription.utils.ConfigUtil;
+import com.cimcitech.mginscription.utils.MD5Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,11 +37,13 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.submit_bt, R.id.register_tv,R.id.update_password_tv})
+    @OnClick({R.id.submit_bt, R.id.register_tv, R.id.update_password_tv})
     public void onclick(View view) {
         switch (view.getId()) {
             case R.id.submit_bt:
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                String string = MD5Util.md5(userPasswordEt.getText().toString().trim());
+                Log.e("md5--->", MD5Util.md5(string + ConfigUtil.MD));
+                Log.e("time--->", getTime());
                 break;
             case R.id.register_tv:
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
@@ -49,5 +52,12 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, ForgetPwdActivity.class));
                 break;
         }
+    }
+
+    //获取系统时间的10位的时间戳
+    public String getTime() {
+        long time = System.currentTimeMillis() / 1000;
+        String str = String.valueOf(time);
+        return str;
     }
 }

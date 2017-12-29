@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.cimcitech.mginscription.R;
 import com.cimcitech.mginscription.utils.StatusBarUtils;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -53,6 +55,45 @@ public class RegisterActivity extends AppCompatActivity {
             case R.id.back_tv:
                 finish();
                 break;
+        }
+    }
+
+
+    //获取系统时间的10位的时间戳
+    public String getTime() {
+        long time = System.currentTimeMillis() / 1000;
+        String str = String.valueOf(time);
+        return str;
+    }
+
+    public ArrayList<KeyValuePair> getRequestData() {
+        ArrayList<KeyValuePair> data = new ArrayList<>();
+        data.add(new KeyValuePair("register_phone", "18927436372"));
+        data.add(new KeyValuePair("register_password", "123456"));
+        data.add(new KeyValuePair("time", getTime()));
+        return data;
+    }
+
+
+    class Request {
+        String register_phone;
+        String register_password;
+        String time;
+
+        public Request(String register_phone, String register_password, String time) {
+            this.register_phone = register_phone;
+            this.register_password = register_password;
+            this.time = time;
+        }
+    }
+
+    public class KeyValuePair {
+        String key;
+        String value;
+
+        public KeyValuePair(String k, String v) {
+            key = k;
+            value = v;
         }
     }
 }

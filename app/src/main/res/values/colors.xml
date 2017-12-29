@@ -10,6 +10,7 @@
     <color name="self02">#e4e7eb</color>
     <color name="self01">#303030</color>
     <color name="black6">#666666</color>
+    <color name="scan_corner_color">#0effc2</color>
     <!-- #726A6A -->
     <color name="textGray">#726A6A</color>
     <!-- 自定义 绿 -->
