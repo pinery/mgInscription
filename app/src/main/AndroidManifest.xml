@@ -34,7 +34,6 @@
         <activity android:name=".activity.ForgetPwdActivity" />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.AddDeviceActivity" />
-        <activity android:name=".activity.QRCodeActivity" />
         <activity android:name=".activity.BaseActivity" />
         <activity android:name=".activity.SecondActivity" />
     </application>

@@ -43,7 +43,6 @@ public class MD5Util {
                 }
                 sb.append(herString);
             }
-
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -85,7 +84,6 @@ public class MD5Util {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
         return sb.toString();
     }
 }
