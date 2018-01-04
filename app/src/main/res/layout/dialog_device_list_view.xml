@@ -19,6 +19,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/device_num_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -26,7 +27,6 @@
                 android:drawablePadding="5dip"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dip"
-                android:text="EQ20170635-001"
                 android:textColor="#64698f"
                 android:textSize="17sp" />
 
@@ -47,13 +47,17 @@
             android:orientation="horizontal">
 
             <EditText
+                android:id="@+id/search_et"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@null"
+                android:ellipsize="end"
                 android:hint="请搜索您的设备编码"
+                android:imeOptions="actionSearch"
                 android:paddingLeft="20dip"
-                android:textColor="#c1c5dd"
+                android:singleLine="true"
+                android:textColor="@color/black6"
                 android:textSize="14sp" />
 
             <ImageView

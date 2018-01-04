@@ -6,21 +6,33 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.cimcitech.mginscription.R;
 import com.cimcitech.mginscription.adapter.UserDeviceAdapter;
 import com.cimcitech.mginscription.model.DeviceVo;
+import com.cimcitech.mginscription.model.ResultVo;
+import com.cimcitech.mginscription.model.UserInfoVo;
+import com.cimcitech.mginscription.utils.ConfigUtil;
+import com.cimcitech.mginscription.utils.ToastUtil;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.Call;
 
 /**
  * Created by dapineapple on 2017/12/27.
@@ -36,10 +48,17 @@ public class UserFragment extends Fragment {
     RelativeLayout settingLayout;
     @BindView(R.id.listContent)
     ListView listContent;
+    @BindView(R.id.username_tv)
+    TextView usernameTv;
+    @BindView(R.id.device_number_tv)
+    TextView deviceNumberTv;
+    @BindView(R.id.device_register_view)
+    FrameLayout deviceRegisterView;
 
     private Unbinder unbinder;
     private UserDeviceAdapter adapter;
     private List<DeviceVo> deviceVos = new ArrayList<>();
+    private UserInfoVo userInfoVo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,13 +69,24 @@ public class UserFragment extends Fragment {
     }
 
     private void initView() {
-        for (int i = 0; i < 6; i++) {
-            DeviceVo deviceVo = new DeviceVo();
-            deviceVo.setName("XQ20171227-00" + i);
-            deviceVos.add(deviceVo);
+
+        if (ConfigUtil.isLogin) {
+            //获取用户详细信息
+            String data = new Gson().toJson(new Userinfo(ConfigUtil.GET_TIME()));
+            Map map = new HashMap();
+            map.put("time", ConfigUtil.GET_TIME());
+            String sign = ConfigUtil.GET_SIGN(map);
+            getUserinfo(data, sign);
+            //获取用户设备信息
+            for (int i = 0; i < 6; i++) {
+                DeviceVo deviceVo = new DeviceVo();
+                //deviceVo.setName("XQ20171227-00" + i);
+                deviceVos.add(deviceVo);
+            }
+            adapter = new UserDeviceAdapter(getActivity(), deviceVos);
+            listContent.setAdapter(adapter);
         }
-        adapter = new UserDeviceAdapter(getActivity(), deviceVos);
-        listContent.setAdapter(adapter);
+
     }
 
     @OnClick({R.id.setting_layout, R.id.device_register_view})
@@ -68,6 +98,53 @@ public class UserFragment extends Fragment {
             case R.id.device_register_view:
                 startActivity(new Intent(getActivity(), AddDeviceActivity.class));
                 break;
+        }
+    }
+
+    //获取用户详细信息
+    private void getUserinfo(String data, String sign) {
+        OkHttpUtils
+                .post()
+                .url(ConfigUtil.IP)
+                .addParams("service", "Users.GetUsersInfo")
+                .addParams("data", data)
+                .addParams("user_id", ConfigUtil.info.getRegister_id())
+                .addParams("token", ConfigUtil.info.getToken())
+                .addParams("sign", sign)
+                .build()
+                .execute(
+                        new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                ToastUtil.showNetError();
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                Gson gson = new Gson();
+                                ResultVo resultVo = gson.fromJson(response, ResultVo.class);
+                                if (resultVo != null && resultVo.getRet() == 200)
+                                    if (resultVo.getData() != null)
+                                        if (resultVo.getData().getCode() == 1) {//正常返回
+                                            userInfoVo = gson.fromJson(response, UserInfoVo.class);
+                                            usernameTv.setText(userInfoVo.getData().getInfo().getRegister_name());
+                                            deviceNumberTv.setText("拥有设备 " + userInfoVo.getData().getInfo().getRegister_device_number());
+                                        } else if (resultVo.getData().getCode() == 2) {//登录超时
+                                            ToastUtil.showToast("登录超时，请重新登录");
+                                            ConfigUtil.isLogin = false;
+                                            startActivity(new Intent(getActivity(), LoginActivity.class));
+                                        } else
+                                            ToastUtil.showToast(resultVo.getData().getReturnmsg());
+                            }
+                        }
+                );
+    }
+
+    class Userinfo {
+        String time;
+
+        public Userinfo(String time) {
+            this.time = time;
         }
     }
 

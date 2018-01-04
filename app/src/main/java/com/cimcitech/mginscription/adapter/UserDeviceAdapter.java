@@ -59,7 +59,7 @@ public class UserDeviceAdapter extends BaseAdapter {
         } else {
             viewHolder = (PopDeviceAdapter.ViewHolder) view.getTag();
         }
-        viewHolder.contentTv.setText(deviceVo.getName());
+        //viewHolder.contentTv.setText(deviceVo.getName());
         return view;
     }
 

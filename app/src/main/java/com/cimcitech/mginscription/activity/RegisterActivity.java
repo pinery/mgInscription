@@ -1,5 +1,6 @@
 package com.cimcitech.mginscription.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,8 +10,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.cimcitech.mginscription.R;
+import com.cimcitech.mginscription.model.ResultVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
 import com.cimcitech.mginscription.utils.ToastUtil;
+import com.cimcitech.mginscription.widget.ShapeLoadingDialog;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -43,12 +46,17 @@ public class RegisterActivity extends AppCompatActivity {
     TextView loginTv;
     @BindView(R.id.back_tv)
     TextView backTv;
+    private SharedPreferences sp;
+    private ShapeLoadingDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+        sp = this.getSharedPreferences(ConfigUtil.KEY_LOGIN_AUTO, MODE_PRIVATE);
+        dialog = new ShapeLoadingDialog(RegisterActivity.this);
+        dialog.setLoadingText("正在登陆...");
     }
 
     @OnClick({R.id.login_tv, R.id.back_tv, R.id.submit_bt})
@@ -61,10 +69,10 @@ public class RegisterActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.submit_bt:
+                if (!checkInput()) return;
+                dialog.show();
                 String username = userNameEt.getText().toString().trim();
                 String password = ConfigUtil.GET_PASSWORD(userPasswordEt.getText().toString().trim());
-                //1967eedebee24581af284705dc4538b3
-                //1967eedebee24581af284705dc4538b3
                 String time = ConfigUtil.GET_TIME();
                 String data = new Gson().toJson(new Request(username, password, time));
                 Map map = new HashMap();
@@ -75,6 +83,22 @@ public class RegisterActivity extends AppCompatActivity {
                 this.register(data, sign);
                 break;
         }
+    }
+
+    private boolean checkInput() {
+        if (userNameEt.getText().toString().trim().equals("")) {
+            ToastUtil.showToast("请输入用户名");
+            return false;
+        }
+        if (userPasswordEt.getText().toString().trim().equals("")) {
+            ToastUtil.showToast("请输入密码");
+            return false;
+        }
+        if (confirmPasswordEt.getText().toString().trim().compareTo(userPasswordEt.getText().toString().trim()) != 0) {
+            ToastUtil.showToast("两次密码输入不一致，请重新输入");
+            return false;
+        }
+        return true;
     }
 
     //注册
@@ -91,17 +115,34 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onError(Call call, Exception e, int id) {
                                 ToastUtil.showNetError();
+                                dialog.dismiss();
                             }
 
                             @Override
                             public void onResponse(String response, int id) {
                                 Gson gson = new Gson();
-                                ToastUtil.showToast(response);
+                                ResultVo resultVo = gson.fromJson(response, ResultVo.class);
+                                dialog.dismiss();
+                                if (resultVo != null && resultVo.getRet() == 200)
+                                    if (resultVo.getData() != null)
+                                        if (resultVo.getData().getCode() == 1) {//正常返回
+                                            ToastUtil.showToast("注册成功");
+                                            saveUserInfo();
+                                            finish();
+                                        } else
+                                            ToastUtil.showToast(resultVo.getData().getReturnmsg());
                             }
                         }
                 );
     }
 
+
+    private void saveUserInfo() {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("username", userNameEt.getText().toString().trim());
+        editor.putString("password", userPasswordEt.getText().toString().trim());
+        editor.commit();
+    }
 
     class Request {
         String register_phone;

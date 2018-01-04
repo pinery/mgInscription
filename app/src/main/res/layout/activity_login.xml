@@ -77,7 +77,6 @@
                 android:hint="请输入密码"
                 android:inputType="textPassword"
                 android:singleLine="true"
-                android:text="123456"
                 android:textColor="@color/black6"
                 android:textSize="15sp" />
         </LinearLayout>

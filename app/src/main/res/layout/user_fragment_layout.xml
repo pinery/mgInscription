@@ -37,6 +37,7 @@
             android:layout_centerVertical="true" />
 
         <TextView
+            android:id="@+id/username_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/center_line"
@@ -44,12 +45,12 @@
             android:layout_marginLeft="15dip"
             android:layout_toRightOf="@+id/user_photo_iv"
             android:layout_weight="1"
-            android:text="铭工张三"
             android:textColor="#f5f9fc"
             android:textSize="15sp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/device_number_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/center_line"
@@ -62,7 +63,6 @@
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:paddingTop="5dip"
-            android:text="拥有设备 10"
             android:textColor="#64698f"
             android:textSize="13sp" />
 
