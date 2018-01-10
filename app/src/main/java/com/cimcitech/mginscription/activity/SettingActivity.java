@@ -162,7 +162,7 @@ public class SettingActivity extends AppCompatActivity {
         });
     }
 
-    //获取用户详细信息
+    //修改用户详细信息
     private void getEditUserInfo(String data, String sign) {
         OkHttpUtils
                 .post()
@@ -189,7 +189,7 @@ public class SettingActivity extends AppCompatActivity {
                                 if (resultVo != null && resultVo.getRet() == 200)
                                     if (resultVo.getData() != null)
                                         if (resultVo.getData().getCode() == 1) {//正常返回
-
+                                            ToastUtil.showToast("提交成功");
                                         } else if (resultVo.getData().getCode() == 2) {//登录超时
                                             ToastUtil.showToast("登录超时，请重新登录");
                                             ConfigUtil.isLogin = false;

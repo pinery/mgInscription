@@ -70,9 +70,23 @@ public class UserFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUserInfoData();
+    }
+
     private void initView() {
         dialog = new ShapeLoadingDialog(getActivity());
         dialog.setLoadingText("正在加载数据...");
+        if (ConfigUtil.isLogin){
+            //获取用户设备信息
+            //adapter = new UserDeviceAdapter(getActivity(), deviceVos);
+            //listContent.setAdapter(adapter);
+        }
+    }
+
+    public void getUserInfoData() {
         if (ConfigUtil.isLogin) {
             //获取用户详细信息
             dialog.show();
@@ -81,11 +95,7 @@ public class UserFragment extends Fragment {
             map.put("time", ConfigUtil.GET_TIME());
             String sign = ConfigUtil.GET_SIGN(map);
             getUserinfo(data, sign);
-            //获取用户设备信息
-            //adapter = new UserDeviceAdapter(getActivity(), deviceVos);
-            //listContent.setAdapter(adapter);
         }
-
     }
 
     @OnClick({R.id.setting_layout, R.id.device_register_view})

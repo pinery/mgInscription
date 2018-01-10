@@ -1,13 +1,21 @@
 package com.cimcitech.mginscription.activity;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.cimcitech.mginscription.R;
+import com.cimcitech.mginscription.adapter.PopupWindowAdapter;
 import com.cimcitech.mginscription.model.DeviceVo;
 import com.cimcitech.mginscription.model.ResultVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
@@ -43,10 +51,13 @@ public class StatisticsFragment extends Fragment {
 
     @BindView(R.id.chart)
     ColumnChartView chart;
+    @BindView(R.id.device_num_tv)
+    TextView deviceNumTv;
 
     private Unbinder unbinder;
     private ColumnChartData columnData;
     private ShapeLoadingDialog dialog;
+    private PopupWindow pop;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,19 +65,36 @@ public class StatisticsFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         dialog = new ShapeLoadingDialog(getActivity());
         dialog.setLoadingText("正在加载...");
-        if (ConfigUtil.deviceNum != null)
-            getDeviceDSumInfoData();
-        if (ConfigUtil.infoBeans != null && ConfigUtil.infoBeans.size() > 0)
-            generateColumnData(ConfigUtil.infoBeans);
+        initView();
         return view;
     }
 
-    public void getDeviceDSumInfoData() {
+    public void initView() {
+        if (ConfigUtil.deviceNum != null) {
+            deviceNumTv.setText(ConfigUtil.deviceNum);
+            getDeviceDSumInfoData(ConfigUtil.deviceNum);
+        }
+        if (ConfigUtil.infoBeans != null && ConfigUtil.infoBeans.size() > 0) {
+            generateColumnData(ConfigUtil.infoBeans);
+            List<String> strings = new ArrayList<>();
+            for (int i = 0; i < ConfigUtil.infoBeans.size(); i++)
+                strings.add(ConfigUtil.infoBeans.get(i).getDevice_num());
+            showContactUsPopWin(getActivity(), strings);
+        }
+        deviceNumTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pop.showAtLocation(view, Gravity.CENTER, 0, 0);
+            }
+        });
+    }
+
+    public void getDeviceDSumInfoData(String deviceNum) {
         dialog.show();
         String data = new Gson().toJson(new GetDeviceDSumInfo(ConfigUtil.deviceNum, ConfigUtil.GET_TIME()));
         Map map = new HashMap();
         map.put("time", ConfigUtil.GET_TIME());
-        map.put("device_num", ConfigUtil.deviceNum);
+        map.put("device_num", deviceNum);
         String sign = ConfigUtil.GET_SIGN(map);
         GetDeviceDSumInfo(data, sign);
     }
@@ -94,8 +122,6 @@ public class StatisticsFragment extends Fragment {
                                 Gson gson = new Gson();
                                 ResultVo resultVo = gson.fromJson(response, ResultVo.class);
                                 dialog.dismiss();
-
-
                             }
                         }
                 );
@@ -135,6 +161,40 @@ public class StatisticsFragment extends Fragment {
         chart.setColumnChartData(columnData);
         chart.setValueSelectionEnabled(true);
         chart.setZoomType(ZoomType.HORIZONTAL);
+    }
+
+    public void showContactUsPopWin(Context context, final List<String> list) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        // 引入窗口配置文件
+        View view = inflater.inflate(R.layout.dialog_client_view, null);
+        view.getBackground().setAlpha(100);
+        // 创建PopupWindow对象
+        pop = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT, false);
+        View pop_reward_view = view.findViewById(R.id.pop_reward_view);
+        final PopupWindowAdapter adapter = new PopupWindowAdapter(context, list);
+        ListView listView = view.findViewById(R.id.listContent);
+        listView.setAdapter(adapter);
+        // 需要设置一下此参数，点击外边可消失
+        pop.setBackgroundDrawable(new BitmapDrawable());
+        // 设置点击窗口外边窗口消失
+        pop.setOutsideTouchable(true);
+        // 设置此参数获得焦点，否则无法点击
+        pop.setFocusable(true);
+        pop_reward_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pop.dismiss();
+            }
+        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                deviceNumTv.setText(adapter.getAll().get(i));
+                getDeviceDSumInfoData(adapter.getAll().get(i));
+                pop.dismiss();
+            }
+        });
     }
 
     @Override
