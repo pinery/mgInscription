@@ -34,7 +34,6 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -85,7 +84,6 @@ public class RealTimeFragment extends Fragment {
     private ShapeLoadingDialog dialog;
     private DeviceVo deviceVo;
     private DeviceVo.DataBean.InfoBean info; //默认显示该设备的数据
-    private List<DeviceVo.DataBean.InfoBean> infoList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -229,8 +227,8 @@ public class RealTimeFragment extends Fragment {
                 .url(ConfigUtil.IP)
                 .addParams("service", "UsersDevice.GetUserDeviceInfo")
                 .addParams("userDeviceInfo", data)
-                .addParams("user_id", ConfigUtil.info.getRegister_id())
-                .addParams("token", ConfigUtil.info.getToken())
+                .addParams("user_id", ConfigUtil.loginInfo.getRegister_id())
+                .addParams("token", ConfigUtil.loginInfo.getToken())
                 .addParams("sign", sign)
                 .build()
                 .execute(
@@ -245,20 +243,23 @@ public class RealTimeFragment extends Fragment {
                             public void onResponse(String response, int id) {
                                 Gson gson = new Gson();
                                 ResultVo resultVo = gson.fromJson(response, ResultVo.class);
+                                dialog.dismiss();
                                 if (resultVo != null && resultVo.getRet() == 200)
                                     if (resultVo.getData() != null)
                                         if (resultVo.getData().getCode() == 1) {//正常返回
                                             deviceVo = gson.fromJson(response, DeviceVo.class);
                                             if (deviceVo.getData() != null && deviceVo.getData().getInfo() != null)
                                                 if (deviceVo.getData().getInfo().size() > 0) {
-                                                    infoList = deviceVo.getData().getInfo();
                                                     info = deviceVo.getData().getInfo().get(0);
                                                     deviceNumTv.setText(info.getDevice_num());
+                                                    ConfigUtil.deviceNum = info.getDevice_num();
+                                                    ConfigUtil.infoBeans = deviceVo.getData().getInfo();
                                                     //pop
                                                     popDeviceNum.setText(info.getDevice_num());
-                                                    popAdapter = new PopDeviceAdapter(getActivity(), infoList);
+                                                    popAdapter = new PopDeviceAdapter(getActivity(), deviceVo.getData().getInfo());
                                                     popListContent.setAdapter(popAdapter);
                                                     //详情
+                                                    dialog.show();
                                                     getDeviceInfoData();
                                                 } else if (isSearch) {//搜索无设备的话提示Toast
                                                     ToastUtil.showToast("搜索无该设备");
@@ -287,8 +288,8 @@ public class RealTimeFragment extends Fragment {
                 .url(ConfigUtil.IP)
                 .addParams("service", "DeviceInfo.GetDeviceInfo")
                 .addParams("userDeviceInfo", data)
-                .addParams("user_id", ConfigUtil.info.getRegister_id())
-                .addParams("token", ConfigUtil.info.getToken())
+                .addParams("user_id", ConfigUtil.loginInfo.getRegister_id())
+                .addParams("token", ConfigUtil.loginInfo.getToken())
                 .addParams("sign", sign)
                 .build()
                 .execute(
@@ -302,8 +303,8 @@ public class RealTimeFragment extends Fragment {
                             @Override
                             public void onResponse(String response, int id) {
                                 Gson gson = new Gson();
-                                dialog.dismiss();
                                 ResultVo resultVo = gson.fromJson(response, ResultVo.class);
+                                dialog.dismiss();
                                 if (resultVo != null && resultVo.getRet() == 200)
                                     if (resultVo.getData() != null)
                                         if (resultVo.getData().getCode() == 1) {//正常返回

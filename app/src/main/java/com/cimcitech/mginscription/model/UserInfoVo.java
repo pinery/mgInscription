@@ -1,10 +1,12 @@
 package com.cimcitech.mginscription.model;
 
+import java.io.Serializable;
+
 /**
  * Created by cimcitech on 2018/1/3.
  */
 
-public class UserInfoVo {
+public class UserInfoVo implements Serializable{
     /**
      * ret : 200
      * data : {"code":1,"returnmsg":"success","info":{"register_id":"6","register_phone":"18666660748","register_name":"18666660748","register_password":"c712ceb589d5dd72105a645927992dbc","register_icon_url":"","register_birthday":"2018-01-03","register_gender":"M","register_email":"","register_create_time":"2018-01-03 13:41:55","register_device_number":"0","register_status":"1","is_have_dev":"0","last_login_time":null}}
@@ -39,7 +41,7 @@ public class UserInfoVo {
         this.msg = msg;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
          * code : 1
          * returnmsg : success
@@ -74,7 +76,7 @@ public class UserInfoVo {
             this.info = info;
         }
 
-        public static class InfoBean {
+        public static class InfoBean implements Serializable{
             /**
              * register_id : 6
              * register_phone : 18666660748
@@ -103,7 +105,7 @@ public class UserInfoVo {
             private String register_device_number;
             private String register_status;
             private String is_have_dev;
-            private Object last_login_time;
+            private String last_login_time;
 
             public String getRegister_id() {
                 return register_id;
@@ -201,11 +203,11 @@ public class UserInfoVo {
                 this.is_have_dev = is_have_dev;
             }
 
-            public Object getLast_login_time() {
+            public String getLast_login_time() {
                 return last_login_time;
             }
 
-            public void setLast_login_time(Object last_login_time) {
+            public void setLast_login_time(String last_login_time) {
                 this.last_login_time = last_login_time;
             }
         }

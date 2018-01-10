@@ -125,8 +125,9 @@ public class LoginActivity extends AppCompatActivity {
                                             LoginVo loginVo = gson.fromJson(response, LoginVo.class);
                                             ToastUtil.showToast("登录成功");
                                             saveUserInfo();
+                                            ConfigUtil.userName = userNameEt.getText().toString().trim();
                                             ConfigUtil.isLogin = true;
-                                            ConfigUtil.info = loginVo.getData().getInfo();
+                                            ConfigUtil.loginInfo = loginVo.getData().getInfo();
                                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                             finish();
                                         } else

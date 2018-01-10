@@ -2,10 +2,12 @@ package com.cimcitech.mginscription.utils;
 
 import android.content.Context;
 
+import com.cimcitech.mginscription.model.DeviceVo;
 import com.cimcitech.mginscription.model.LoginVo;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -18,7 +20,13 @@ public class ConfigUtil {
 
     public static Context CONTEXT;
 
-    public static boolean isLogin;
+    public static boolean isLogin; //登录状态
+
+    public static String deviceNum; //用户选中的设备
+
+    public static List<DeviceVo.DataBean.InfoBean> infoBeans;//用户所有的设备信息
+
+    public static String userName = ""; //用户名称
 
     public static String KEY_LOGIN_AUTO = "key_login_auto"; //保存登录账号和密码
 
@@ -26,7 +34,7 @@ public class ConfigUtil {
 
     public static final String MD5_CODE = "sFxe6jew1n2JxkRT_SZYYGDMP";
 
-    public static LoginVo.DataBean.InfoBean info; //登录的user_data
+    public static LoginVo.DataBean.InfoBean loginInfo; //登录的user_data
 
     //获取系统时间的10位的时间戳
     public static String GET_TIME() {
@@ -36,9 +44,6 @@ public class ConfigUtil {
 
     //密码加密
     public static String GET_PASSWORD(String password) {
-        System.out.println("md5--password-->" + MD5Util.md5(password));
-        System.out.println("md5--MD5_CODE-->" + MD5Util.md5(MD5_CODE));
-        System.out.println("md5--password + MD5_CODE-->" + MD5Util.md5(password) + MD5Util.md5(MD5_CODE));
         return MD5Util.md5(MD5Util.md5(password) + MD5Util.md5(MD5_CODE));
     }
 
@@ -64,11 +69,6 @@ public class ConfigUtil {
             if (!map.get(key).equals(""))
                 sign = sign + key + map.get(key);
         }
-        System.out.println("sign--->" + sign);
-        System.out.println("sign + GET_TIME() + MD5_CODE--->" + sign + GET_TIME() + MD5_CODE);
-        System.out.println("sign + GET_TIME() + MD5_CODE---md5--->" + MD5Util.md5(sign + GET_TIME() + MD5_CODE));
-        System.out.println("sign + GET_TIME() + MD5_CODE---md5---toUpperCase--->"
-                + MD5Util.md5(sign + GET_TIME() + MD5_CODE).toUpperCase());
         return MD5Util.md5(sign + GET_TIME() + MD5_CODE).toUpperCase();
     }
 }

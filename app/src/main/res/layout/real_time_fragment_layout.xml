@@ -19,7 +19,6 @@
             android:drawablePadding="5dip"
             android:gravity="center_vertical"
             android:paddingLeft="10dip"
-            android:text="EQ20170635-001"
             android:textColor="#64698f"
             android:textSize="17sp" />
 
