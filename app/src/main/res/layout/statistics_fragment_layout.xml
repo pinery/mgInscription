@@ -107,6 +107,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/sumTime_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -139,6 +140,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/countMakeNum_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"

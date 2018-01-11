@@ -85,12 +85,26 @@
         android:layout_height="0.2dip"
         android:background="@color/alpha30" />
 
-    <include
-        android:id="@+id/statistics_left_axis_view"
-        layout="@layout/statistics_left_axis_view" />
+    <com.cimcitech.mginscription.widget.CustomScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
-    <include
-        android:id="@+id/statistics_right_register_view"
-        layout="@layout/statistics_right_register_view"
-        android:visibility="gone" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/statistics_left_axis_view"
+                layout="@layout/statistics_left_axis_view"
+                android:visibility="visible" />
+
+            <include
+                android:id="@+id/statistics_right_register_view"
+                layout="@layout/statistics_right_register_view"
+                android:visibility="gone" />
+        </LinearLayout>
+    </com.cimcitech.mginscription.widget.CustomScrollView>
 </LinearLayout>

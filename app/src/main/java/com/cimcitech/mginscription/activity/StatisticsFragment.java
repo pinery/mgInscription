@@ -1,6 +1,7 @@
 package com.cimcitech.mginscription.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.cimcitech.mginscription.R;
 import com.cimcitech.mginscription.adapter.PopupWindowAdapter;
+import com.cimcitech.mginscription.model.DeviceDSumInfoVo;
 import com.cimcitech.mginscription.model.DeviceVo;
 import com.cimcitech.mginscription.model.ResultVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
@@ -53,6 +55,10 @@ public class StatisticsFragment extends Fragment {
     ColumnChartView chart;
     @BindView(R.id.device_num_tv)
     TextView deviceNumTv;
+    @BindView(R.id.sumTime_tv)
+    TextView sumTimeTv;
+    @BindView(R.id.countMakeNum_tv)
+    TextView countMakeNumTv;
 
     private Unbinder unbinder;
     private ColumnChartData columnData;
@@ -122,6 +128,19 @@ public class StatisticsFragment extends Fragment {
                                 Gson gson = new Gson();
                                 ResultVo resultVo = gson.fromJson(response, ResultVo.class);
                                 dialog.dismiss();
+                                if (resultVo.getData().getCode() == 1) {//正常返回
+                                    DeviceDSumInfoVo dSumInfoVo = gson.fromJson(response, DeviceDSumInfoVo.class);
+                                    if (dSumInfoVo != null && dSumInfoVo.getData() != null && dSumInfoVo.getData().getInfo() != null) {
+                                        sumTimeTv.setText(dSumInfoVo.getData().getInfo().getSumTime() + "");
+                                        countMakeNumTv.setText(dSumInfoVo.getData().getInfo().getCountMakeNum() != null ?
+                                                dSumInfoVo.getData().getInfo().getCountMakeNum().toString() : "-");
+                                    }
+                                } else if (resultVo.getData().getCode() == 2) {//登录超时
+                                    ToastUtil.showToast("登录超时，请重新登录");
+                                    ConfigUtil.isLogin = false;
+                                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                                } else
+                                    ToastUtil.showToast(resultVo.getData().getReturnmsg());
                             }
                         }
                 );
