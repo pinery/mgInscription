@@ -128,7 +128,10 @@ public class LoginActivity extends AppCompatActivity {
                                             ConfigUtil.userName = userNameEt.getText().toString().trim();
                                             ConfigUtil.isLogin = true;
                                             ConfigUtil.loginInfo = loginVo.getData().getInfo();
-                                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                            if (ConfigUtil.isOutLogin) {
+                                                ConfigUtil.isOutLogin = false;
+                                            } else
+                                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                             finish();
                                         } else
                                             ToastUtil.showToast(resultVo.getData().getReturnmsg());

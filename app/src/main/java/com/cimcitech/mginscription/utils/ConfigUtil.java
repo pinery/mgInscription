@@ -20,7 +20,9 @@ public class ConfigUtil {
 
     public static Context CONTEXT;
 
-    public static boolean isLogin; //登录状态
+    public static boolean isLogin = false; //登录状态
+
+    public static boolean isOutLogin = false; //是否点击了退出登录按钮
 
     public static String deviceNum; //用户选中的设备
 

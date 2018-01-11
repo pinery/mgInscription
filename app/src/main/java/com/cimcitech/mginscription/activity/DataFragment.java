@@ -215,6 +215,7 @@ public class DataFragment extends Fragment {
                                 } else if (resultVo.getData().getCode() == 2) {//登录超时
                                     ToastUtil.showToast("登录超时，请重新登录");
                                     ConfigUtil.isLogin = false;
+                                    ConfigUtil.isOutLogin = true;
                                     startActivity(new Intent(getActivity(), LoginActivity.class));
                                 } else
                                     ToastUtil.showToast(resultVo.getData().getReturnmsg());

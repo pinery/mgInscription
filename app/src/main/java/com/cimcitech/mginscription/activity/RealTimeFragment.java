@@ -99,7 +99,8 @@ public class RealTimeFragment extends Fragment {
         //获取设备信息
         dialog = new ShapeLoadingDialog(getActivity());
         dialog.setLoadingText("正在加载数据...");
-        getUserDeviceInfoData();
+        if (ConfigUtil.loginInfo != null)
+            getUserDeviceInfoData();
     }
 
     private void getUserDeviceInfoData() {
@@ -145,7 +146,8 @@ public class RealTimeFragment extends Fragment {
                 protected Void doInBackground(Void... voids) {
                     try {
                         Thread.sleep(1000);
-                        getUserDeviceInfoData();
+                        if (ConfigUtil.loginInfo != null)
+                            getUserDeviceInfoData();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -268,12 +270,10 @@ public class RealTimeFragment extends Fragment {
                                         } else if (resultVo.getData().getCode() == 2) {//登录超时
                                             ToastUtil.showToast("登录超时，请重新登录");
                                             ConfigUtil.isLogin = false;
-                                            dialog.dismiss();
+                                            ConfigUtil.isOutLogin = true;
                                             startActivity(new Intent(getActivity(), LoginActivity.class));
-                                        } else {
+                                        } else
                                             ToastUtil.showToast(resultVo.getData().getReturnmsg());
-                                            dialog.dismiss();
-                                        }
 
 
                             }
@@ -333,6 +333,7 @@ public class RealTimeFragment extends Fragment {
                                         } else if (resultVo.getData().getCode() == 2) {//登录超时
                                             ToastUtil.showToast("登录超时，请重新登录");
                                             ConfigUtil.isLogin = false;
+                                            ConfigUtil.isOutLogin = true;
                                             startActivity(new Intent(getActivity(), LoginActivity.class));
                                         } else
                                             ToastUtil.showToast(resultVo.getData().getReturnmsg());

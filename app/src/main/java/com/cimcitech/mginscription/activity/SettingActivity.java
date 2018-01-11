@@ -91,6 +91,7 @@ public class SettingActivity extends AppCompatActivity {
                 break;
             case R.id.out_login_bt:
                 startActivity(new Intent(SettingActivity.this, LoginActivity.class));
+                ConfigUtil.isOutLogin = true;
                 ConfigUtil.isLogin = false;
                 finish();
                 break;
@@ -193,6 +194,7 @@ public class SettingActivity extends AppCompatActivity {
                                         } else if (resultVo.getData().getCode() == 2) {//登录超时
                                             ToastUtil.showToast("登录超时，请重新登录");
                                             ConfigUtil.isLogin = false;
+                                            ConfigUtil.isOutLogin = true;
                                             startActivity(new Intent(SettingActivity.this, LoginActivity.class));
                                         } else
                                             ToastUtil.showToast(resultVo.getData().getReturnmsg());

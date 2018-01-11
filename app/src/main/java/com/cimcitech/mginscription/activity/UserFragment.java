@@ -58,7 +58,6 @@ public class UserFragment extends Fragment {
 
     private Unbinder unbinder;
     private UserDeviceAdapter adapter;
-    private List<DeviceVo> deviceVos = new ArrayList<>();
     private UserInfoVo userInfoVo;
     private ShapeLoadingDialog dialog;
 
@@ -79,11 +78,6 @@ public class UserFragment extends Fragment {
     private void initView() {
         dialog = new ShapeLoadingDialog(getActivity());
         dialog.setLoadingText("正在加载数据...");
-        if (ConfigUtil.isLogin){
-            //获取用户设备信息
-            //adapter = new UserDeviceAdapter(getActivity(), deviceVos);
-            //listContent.setAdapter(adapter);
-        }
     }
 
     public void getUserInfoData() {
@@ -95,6 +89,11 @@ public class UserFragment extends Fragment {
             map.put("time", ConfigUtil.GET_TIME());
             String sign = ConfigUtil.GET_SIGN(map);
             getUserinfo(data, sign);
+            //获取用户设备信息
+            if (ConfigUtil.infoBeans != null && ConfigUtil.infoBeans.size() > 0) {
+                adapter = new UserDeviceAdapter(getActivity(), ConfigUtil.infoBeans);
+                listContent.setAdapter(adapter);
+            }
         }
     }
 
@@ -148,6 +147,7 @@ public class UserFragment extends Fragment {
                                         } else if (resultVo.getData().getCode() == 2) {//登录超时
                                             ToastUtil.showToast("登录超时，请重新登录");
                                             ConfigUtil.isLogin = false;
+                                            ConfigUtil.isOutLogin = true;
                                             startActivity(new Intent(getActivity(), LoginActivity.class));
                                         } else
                                             ToastUtil.showToast(resultVo.getData().getReturnmsg());

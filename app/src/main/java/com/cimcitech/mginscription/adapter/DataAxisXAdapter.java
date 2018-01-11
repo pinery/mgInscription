@@ -46,6 +46,7 @@ public class DataAxisXAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        List<String> item = x.get(position);
         ViewHolder wrapper = null;
         if (wrapper == null) {
             convertView = inflater.inflate(R.layout.data_axis_item_view, null);
@@ -54,6 +55,14 @@ public class DataAxisXAdapter extends BaseAdapter {
             convertView.setPadding(5, 10, 5, 10);
         } else {
             wrapper = (ViewHolder) convertView.getTag();
+        }
+        if (item.size() >= 2) {
+            wrapper.itemNumTv.setText("" + (position + 1));
+            wrapper.itemValueTv.setText(item.get(0));
+            if (item.get(1).compareTo("0") == 1) {
+                wrapper.itemCb.setChecked(true);
+            } else if (item.get(1).compareTo("1") == 0)
+                wrapper.itemCb.setChecked(false);
         }
         return convertView;
     }

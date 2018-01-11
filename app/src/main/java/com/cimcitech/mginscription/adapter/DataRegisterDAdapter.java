@@ -45,6 +45,7 @@ public class DataRegisterDAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        List<String> item = d.get(position);
         ViewHolder wrapper = null;
         if (wrapper == null) {
             convertView = inflater.inflate(R.layout.data_register_item_view, null);
@@ -53,6 +54,11 @@ public class DataRegisterDAdapter extends BaseAdapter {
             convertView.setPadding(5, 10, 5, 10);
         } else {
             wrapper = (ViewHolder) convertView.getTag();
+        }
+        if (item.size() >= 2) {
+            wrapper.itemNumTv.setText("" + (position + 1));
+            wrapper.itemValueTv.setText(item.get(0));
+            wrapper.itemCb.setText(item.get(1));
         }
         return convertView;
     }
