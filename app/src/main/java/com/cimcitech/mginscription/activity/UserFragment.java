@@ -93,6 +93,8 @@ public class UserFragment extends Fragment {
             if (ConfigUtil.infoBeans != null && ConfigUtil.infoBeans.size() > 0) {
                 adapter = new UserDeviceAdapter(getActivity(), ConfigUtil.infoBeans);
                 listContent.setAdapter(adapter);
+            } else {
+                listContent.setVisibility(View.GONE);
             }
         }
     }
