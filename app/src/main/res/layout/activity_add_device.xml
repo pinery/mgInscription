@@ -78,4 +78,56 @@
                 android:textSize="14sp" />
         </LinearLayout>
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dip"
+        android:layout_marginTop="20dip"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dip"
+            android:gravity="center"
+            android:text="设备编号"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/driver_number_et"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dip"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="设备名牌上面可见"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/black6"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/close_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:src="@mipmap/addpoi_del_addr_mark"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/submit_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dip"
+        android:layout_marginRight="30dip"
+        android:layout_marginTop="40dip"
+        android:background="@drawable/submit_button_bg"
+        android:text="注册"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
 </LinearLayout>

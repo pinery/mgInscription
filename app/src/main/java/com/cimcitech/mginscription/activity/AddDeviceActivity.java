@@ -1,18 +1,19 @@
 package com.cimcitech.mginscription.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.cimcitech.mginscription.MainActivity;
 import com.cimcitech.mginscription.R;
-import com.uuzuche.lib_zxing.activity.CaptureActivity;
-import com.uuzuche.lib_zxing.activity.CaptureFragment;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import butterknife.BindView;
@@ -27,6 +28,12 @@ public class AddDeviceActivity extends AppCompatActivity {
     ImageButton rightIb;
     @BindView(R.id.qr_code_view)
     RelativeLayout qrCodeView;
+    @BindView(R.id.driver_number_et)
+    EditText driverNumberEt;
+    @BindView(R.id.close_iv)
+    ImageView closeIv;
+    @BindView(R.id.submit_bt)
+    Button submitBt;
 
     public static final int REQUEST_CODE = 1000;
 
@@ -35,6 +42,29 @@ public class AddDeviceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_device);
         ButterKnife.bind(this);
+        initView();
+    }
+
+    public void initView() {
+        driverNumberEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (driverNumberEt.getText().toString().trim().equals(""))
+                    closeIv.setVisibility(View.INVISIBLE);
+                else
+                    closeIv.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
 
@@ -58,7 +88,7 @@ public class AddDeviceActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick({R.id.qr_code_view, R.id.back_ib})
+    @OnClick({R.id.qr_code_view, R.id.back_ib, R.id.close_iv})
     public void onclick(View view) {
         switch (view.getId()) {
             case R.id.qr_code_view:
@@ -67,6 +97,9 @@ public class AddDeviceActivity extends AppCompatActivity {
                 break;
             case R.id.back_ib:
                 finish();
+                break;
+            case R.id.close_iv:
+                driverNumberEt.setText("");
                 break;
         }
     }

@@ -76,6 +76,7 @@ public class StatisticsFragment extends Fragment {
     }
 
     public void initView() {
+        getStatisticsByDayData();//获取柱状图的数据
         if (ConfigUtil.deviceNum != null) {
             deviceNumTv.setText(ConfigUtil.deviceNum);
             getDeviceDSumInfoData(ConfigUtil.deviceNum);
@@ -90,7 +91,8 @@ public class StatisticsFragment extends Fragment {
         deviceNumTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pop.showAtLocation(view, Gravity.CENTER, 0, 0);
+                if (ConfigUtil.infoBeans != null && ConfigUtil.infoBeans.size() > 0)
+                    pop.showAtLocation(view, Gravity.CENTER, 0, 0);
             }
         });
     }
@@ -103,6 +105,17 @@ public class StatisticsFragment extends Fragment {
         map.put("device_num", deviceNum);
         String sign = ConfigUtil.GET_SIGN(map);
         GetDeviceDSumInfo(data, sign);
+    }
+
+    public void getStatisticsByDayData() {
+        dialog.show();
+        String data = new Gson().toJson(new StatisticsByDay("20", "1", ConfigUtil.GET_TIME()));
+        Map map = new HashMap();
+        map.put("time", ConfigUtil.GET_TIME());
+        map.put("num", "20");
+        map.put("start", "1");
+        String sign = ConfigUtil.GET_SIGN(map);
+        GetStatisticsByDay(data, sign);
     }
 
     private void GetDeviceDSumInfo(String data, String sign) {
@@ -215,6 +228,55 @@ public class StatisticsFragment extends Fragment {
                 pop.dismiss();
             }
         });
+    }
+
+    private void GetStatisticsByDay(String data, String sign) {
+        OkHttpUtils
+                .post()
+                .url(ConfigUtil.IP)
+                .addParams("service", "DeviceInfo.StatisticsByDay")
+                .addParams("userDeviceInfo", data)
+                .addParams("user_id", ConfigUtil.loginInfo.getRegister_id())
+                .addParams("token", ConfigUtil.loginInfo.getToken())
+                .addParams("sign", sign)
+                .build()
+                .execute(
+                        new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                ToastUtil.showNetError();
+                                dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                Gson gson = new Gson();
+                                ResultVo resultVo = gson.fromJson(response, ResultVo.class);
+                                dialog.dismiss();
+                                if (resultVo.getData().getCode() == 1) {//正常返回
+
+                                } else if (resultVo.getData().getCode() == 2) {//登录超时
+                                    ToastUtil.showToast("登录超时，请重新登录");
+                                    ConfigUtil.isLogin = false;
+                                    ConfigUtil.isOutLogin = true;
+                                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                                } else
+                                    ToastUtil.showToast(resultVo.getData().getReturnmsg());
+                            }
+                        }
+                );
+    }
+
+    class StatisticsByDay {
+        String num;
+        String start;
+        String time;
+
+        public StatisticsByDay(String num, String start, String time) {
+            this.num = num;
+            this.start = start;
+            this.time = time;
+        }
     }
 
     @Override

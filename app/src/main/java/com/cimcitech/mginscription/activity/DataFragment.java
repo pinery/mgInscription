@@ -153,7 +153,7 @@ public class DataFragment extends Fragment {
         Map map = new HashMap();
         map.put("num", "20");
         map.put("start", "1");
-        map.put("device_num", ConfigUtil.deviceNum);
+        map.put("device_num", ConfigUtil.deviceNum != null ? ConfigUtil.deviceNum : "");
         map.put("type", type);
         map.put("time", ConfigUtil.GET_TIME());
         String sign = ConfigUtil.GET_SIGN(map);
