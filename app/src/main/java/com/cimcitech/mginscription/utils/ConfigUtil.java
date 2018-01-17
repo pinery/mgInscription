@@ -5,6 +5,8 @@ import android.content.Context;
 import com.cimcitech.mginscription.model.DeviceVo;
 import com.cimcitech.mginscription.model.LoginVo;
 
+import java.lang.reflect.Array;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -26,6 +28,8 @@ public class ConfigUtil {
 
     public static String deviceNum; //用户选中的设备
 
+    public static boolean isAddDevice = false; //是否添加了设备
+
     public static List<DeviceVo.DataBean.InfoBean> infoBeans;//用户所有的设备信息
 
     public static String userName = ""; //用户名称
@@ -37,6 +41,21 @@ public class ConfigUtil {
     public static final String MD5_CODE = "sFxe6jew1n2JxkRT_SZYYGDMP";
 
     public static LoginVo.DataBean.InfoBean loginInfo; //登录的user_data
+
+    //判空
+    public static boolean isEmpty(Object obj) {
+        if (obj == null)
+            return true;
+        if (obj instanceof String && obj.toString().trim().length() == 0)
+            return true;
+        if (obj.getClass().isArray() && Array.getLength(obj) == 0)
+            return true;
+        if (obj instanceof Collection && ((Collection) obj).isEmpty())
+            return true;
+        if (obj instanceof Map && ((Map) obj).isEmpty())
+            return true;
+        return false;
+    }
 
     //获取系统时间的10位的时间戳
     public static String GET_TIME() {

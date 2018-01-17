@@ -186,7 +186,7 @@ public class DataFragment extends Fragment {
                                 if (resultVo.getData().getCode() == 1) {//正常返回
                                     if (type == 1) {
                                         //response
-                                        DeviceRegisterInfo1Vo info1Vo = gson.fromJson(ConfigUtil.json1, DeviceRegisterInfo1Vo.class);
+                                        DeviceRegisterInfo1Vo info1Vo = gson.fromJson(response, DeviceRegisterInfo1Vo.class);
                                         if (info1Vo != null && info1Vo.getData() != null && info1Vo.getData().getInfo() != null)
                                             if (info1Vo.getData().getInfo().size() > 0) {
                                                 for (int i = 0; i < info1Vo.getData().getInfo().size(); i++) {
@@ -200,7 +200,7 @@ public class DataFragment extends Fragment {
                                             }
                                     } else if (type == 2) {
                                         //response
-                                        DeviceRegisterInfo2Vo info2Vo = gson.fromJson(ConfigUtil.json2, DeviceRegisterInfo2Vo.class);
+                                        DeviceRegisterInfo2Vo info2Vo = gson.fromJson(response, DeviceRegisterInfo2Vo.class);
                                         if (info2Vo.getData().getInfo().size() > 0) {
                                             for (int i = 0; i < info2Vo.getData().getInfo().size(); i++) {
                                                 c = info2Vo.getData().getInfo().get(i).getC();

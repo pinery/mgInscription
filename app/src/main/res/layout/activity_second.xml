@@ -58,7 +58,7 @@
             android:paddingLeft="30dip"
             android:paddingRight="30dip"
             android:paddingTop="3dip"
-            android:text="将设备二维码放入框内"
+            android:text="将设备二维码/条码放入框内"
             android:textColor="#f6f6f6"
             android:textSize="13sp" />
     </LinearLayout>

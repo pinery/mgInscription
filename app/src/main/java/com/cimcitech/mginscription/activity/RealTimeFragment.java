@@ -95,10 +95,14 @@ public class RealTimeFragment extends Fragment {
 
     private void initView() {
         showCancelPopWin(getActivity());
-        scrollView.setOnRefreshListener(new setPullRefreshListener());
         //获取设备信息
         dialog = new ShapeLoadingDialog(getActivity());
         dialog.setLoadingText("正在加载数据...");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         if (ConfigUtil.loginInfo != null)
             getUserDeviceInfoData();
     }
@@ -133,33 +137,6 @@ public class RealTimeFragment extends Fragment {
             case R.id.drop_down_iv:
                 pop.showAtLocation(view, Gravity.CENTER, 0, 0);
                 break;
-        }
-    }
-
-    class setPullRefreshListener implements CustomScrollView.OnRefreshListener {
-
-        @Override
-        public void onRefresh() {
-            new AsyncTask<Void, Void, Void>() {
-
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    try {
-                        Thread.sleep(1000);
-                        if (ConfigUtil.loginInfo != null)
-                            getUserDeviceInfoData();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-
-                @Override
-                protected void onPostExecute(Void aVoid) {
-                    super.onPostExecute(aVoid);
-                    scrollView.onRefreshComplete();
-                }
-            }.execute();
         }
     }
 
