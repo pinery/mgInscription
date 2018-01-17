@@ -18,8 +18,8 @@ import android.widget.TextView;
 import com.cimcitech.mginscription.R;
 import com.cimcitech.mginscription.adapter.PopupWindowAdapter;
 import com.cimcitech.mginscription.model.DeviceDSumInfoVo;
-import com.cimcitech.mginscription.model.DeviceVo;
 import com.cimcitech.mginscription.model.ResultVo;
+import com.cimcitech.mginscription.model.StatisticsByDayVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
 import com.cimcitech.mginscription.utils.ToastUtil;
 import com.cimcitech.mginscription.widget.ShapeLoadingDialog;
@@ -57,8 +57,10 @@ public class StatisticsFragment extends Fragment {
     TextView deviceNumTv;
     @BindView(R.id.sumTime_tv)
     TextView sumTimeTv;
-    @BindView(R.id.countMakeNum_tv)
-    TextView countMakeNumTv;
+    @BindView(R.id.sumMakeNum_tv)
+    TextView sumMakeNumTv;
+    @BindView(R.id.productivity_tv)
+    TextView productivityTv;
 
     private Unbinder unbinder;
     private ColumnChartData columnData;
@@ -77,27 +79,16 @@ public class StatisticsFragment extends Fragment {
 
     public void initView() {
         getStatisticsByDayData();//获取柱状图的数据
-        if (ConfigUtil.deviceNum != null) {
-            deviceNumTv.setText(ConfigUtil.deviceNum);
-            getDeviceDSumInfoData(ConfigUtil.deviceNum);
-        }
-        if (ConfigUtil.infoBeans != null && ConfigUtil.infoBeans.size() > 0) {
-            generateColumnData(ConfigUtil.infoBeans);
-            List<String> strings = new ArrayList<>();
-            for (int i = 0; i < ConfigUtil.infoBeans.size(); i++)
-                strings.add(ConfigUtil.infoBeans.get(i).getDevice_num());
-            showContactUsPopWin(getActivity(), strings);
-        }
         deviceNumTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ConfigUtil.infoBeans != null && ConfigUtil.infoBeans.size() > 0)
+                if (!deviceNumTv.getText().toString().trim().equals("")) //判断一下防止奔溃
                     pop.showAtLocation(view, Gravity.CENTER, 0, 0);
             }
         });
     }
 
-    public void getDeviceDSumInfoData(String deviceNum) {
+    private void getDeviceDSumInfoData(String deviceNum) {
         dialog.show();
         String data = new Gson().toJson(new GetDeviceDSumInfo(ConfigUtil.deviceNum, ConfigUtil.GET_TIME()));
         Map map = new HashMap();
@@ -107,7 +98,7 @@ public class StatisticsFragment extends Fragment {
         GetDeviceDSumInfo(data, sign);
     }
 
-    public void getStatisticsByDayData() {
+    private void getStatisticsByDayData() {
         dialog.show();
         String data = new Gson().toJson(new StatisticsByDay("20", "1", ConfigUtil.GET_TIME()));
         Map map = new HashMap();
@@ -118,6 +109,7 @@ public class StatisticsFragment extends Fragment {
         GetStatisticsByDay(data, sign);
     }
 
+    //用户获取单个设备的总的生产数量和总的运行时间信息
     private void GetDeviceDSumInfo(String data, String sign) {
         OkHttpUtils
                 .post()
@@ -144,9 +136,7 @@ public class StatisticsFragment extends Fragment {
                                 if (resultVo.getData().getCode() == 1) {//正常返回
                                     DeviceDSumInfoVo dSumInfoVo = gson.fromJson(response, DeviceDSumInfoVo.class);
                                     if (dSumInfoVo != null && dSumInfoVo.getData() != null && dSumInfoVo.getData().getInfo() != null) {
-                                        sumTimeTv.setText(dSumInfoVo.getData().getInfo().getSumTime() + "");
-                                        countMakeNumTv.setText(dSumInfoVo.getData().getInfo().getCountMakeNum() != null ?
-                                                dSumInfoVo.getData().getInfo().getCountMakeNum().toString() : "-");
+
                                     }
                                 } else if (resultVo.getData().getCode() == 2) {//登录超时
                                     ToastUtil.showToast("登录超时，请重新登录");
@@ -170,7 +160,7 @@ public class StatisticsFragment extends Fragment {
         }
     }
 
-    private void generateColumnData(List<DeviceVo.DataBean.InfoBean> infoBeans) {
+    private void generateColumnData(List<StatisticsByDayVo.DataBean.InfoBean> infoBeans) {
         int numSubcolumns = 2;
         int numColumns = infoBeans.size();
         List<AxisValue> axisValues = new ArrayList<AxisValue>();
@@ -180,11 +170,14 @@ public class StatisticsFragment extends Fragment {
             values = new ArrayList<>();
             for (int j = 0; j < numSubcolumns; ++j) {
                 if (j == 0)
-                    values.add(new SubcolumnValue((float) 50, Color.parseColor("#83bde5")));
+                    values.add(new SubcolumnValue(infoBeans.get(i).getCountmakenum() != null ?
+                            Float.parseFloat(infoBeans.get(i).getCountmakenum()) : 0,
+                            Color.parseColor("#83bde5")));
                 else
-                    values.add(new SubcolumnValue((float) 500, Color.parseColor("#afe19c")));
+                    values.add(new SubcolumnValue((float) infoBeans.get(i).getWork_time(),
+                            Color.parseColor("#afe19c")));
             }
-            axisValues.add(new AxisValue(i).setLabel(infoBeans.get(i).getDevice_num()));
+            axisValues.add(new AxisValue(i).setLabel(infoBeans.get(i).getDev_num()));
             columns.add(new Column(values).setHasLabelsOnlyForSelected(true));
         }
         columnData = new ColumnChartData(columns);
@@ -196,7 +189,7 @@ public class StatisticsFragment extends Fragment {
         chart.setZoomType(ZoomType.HORIZONTAL);
     }
 
-    public void showContactUsPopWin(Context context, final List<String> list) {
+    private void showContactUsPopWin(Context context, final List<StatisticsByDayVo.DataBean.InfoBean> infoBeans) {
         LayoutInflater inflater = LayoutInflater.from(context);
         // 引入窗口配置文件
         View view = inflater.inflate(R.layout.dialog_client_view, null);
@@ -205,7 +198,7 @@ public class StatisticsFragment extends Fragment {
         pop = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT, false);
         View pop_reward_view = view.findViewById(R.id.pop_reward_view);
-        final PopupWindowAdapter adapter = new PopupWindowAdapter(context, list);
+        final PopupWindowAdapter adapter = new PopupWindowAdapter(context, infoBeans);
         ListView listView = view.findViewById(R.id.listContent);
         listView.setAdapter(adapter);
         // 需要设置一下此参数，点击外边可消失
@@ -223,13 +216,17 @@ public class StatisticsFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                deviceNumTv.setText(adapter.getAll().get(i));
-                getDeviceDSumInfoData(adapter.getAll().get(i));
+                StatisticsByDayVo.DataBean.InfoBean infoBean = adapter.getAll().get(i);
+                deviceNumTv.setText(infoBean.getDev_num());
+                sumTimeTv.setText(infoBean.getSumTime() + "");
+                sumMakeNumTv.setText(infoBean.getSumMakeNum() + "");
+                productivityTv.setText(infoBean.getProductivity() != null ? infoBean.getProductivity() : "-");
                 pop.dismiss();
             }
         });
     }
 
+    //获取设备的日排名（产量），用于柱形图显示
     private void GetStatisticsByDay(String data, String sign) {
         OkHttpUtils
                 .post()
@@ -254,7 +251,16 @@ public class StatisticsFragment extends Fragment {
                                 ResultVo resultVo = gson.fromJson(response, ResultVo.class);
                                 dialog.dismiss();
                                 if (resultVo.getData().getCode() == 1) {//正常返回
-
+                                    StatisticsByDayVo dayVo = gson.fromJson(response, StatisticsByDayVo.class);
+                                    if (dayVo.getData() != null && dayVo.getData().getInfo().size() > 0) {
+                                        generateColumnData(dayVo.getData().getInfo());
+                                        showContactUsPopWin(getActivity(), dayVo.getData().getInfo());
+                                        StatisticsByDayVo.DataBean.InfoBean info = dayVo.getData().getInfo().get(0);//默认的统计
+                                        deviceNumTv.setText(info.getDev_num());
+                                        sumTimeTv.setText(info.getSumTime() + "");
+                                        sumMakeNumTv.setText(info.getSumMakeNum() + "");
+                                        productivityTv.setText(info.getProductivity() != null ? info.getProductivity() : "-");
+                                    }
                                 } else if (resultVo.getData().getCode() == 2) {//登录超时
                                     ToastUtil.showToast("登录超时，请重新登录");
                                     ConfigUtil.isLogin = false;

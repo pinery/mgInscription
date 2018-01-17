@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.cimcitech.mginscription.R;
+import com.cimcitech.mginscription.model.StatisticsByDayVo;
 
 import java.util.List;
 
@@ -20,16 +21,16 @@ import butterknife.ButterKnife;
 
 public class PopupWindowAdapter extends BaseAdapter {
 
-    private List<String> data;
+    private List<StatisticsByDayVo.DataBean.InfoBean> data;
 
     private LayoutInflater inflater;
 
-    public PopupWindowAdapter(Context context, List<String> data) {
+    public PopupWindowAdapter(Context context, List<StatisticsByDayVo.DataBean.InfoBean> infoBeans) {
         inflater = LayoutInflater.from(context);
-        this.data = data;
+        this.data = infoBeans;
     }
 
-    public List<String> getAll() {
+    public List<StatisticsByDayVo.DataBean.InfoBean> getAll() {
         return data;
     }
 
@@ -50,6 +51,7 @@ public class PopupWindowAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        StatisticsByDayVo.DataBean.InfoBean infoBean = data.get(i);
         ViewHolder viewHolder = null;
         if (viewHolder == null) {
             view = inflater.inflate(R.layout.popup_window_item_view, null);
@@ -58,7 +60,7 @@ public class PopupWindowAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        viewHolder.textView.setText(data.get(i));
+        viewHolder.textView.setText(infoBean.getDev_num());
         return view;
     }
 

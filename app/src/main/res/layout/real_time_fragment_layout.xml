@@ -31,7 +31,7 @@
             android:src="@mipmap/icon_drop_down" />
     </LinearLayout>
 
-    <com.cimcitech.mginscription.widget.CustomScrollView
+    <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -316,5 +316,5 @@
                     android:src="@mipmap/icon_close" />
             </RelativeLayout>
         </LinearLayout>
-    </com.cimcitech.mginscription.widget.CustomScrollView>
+    </ScrollView>
 </LinearLayout>

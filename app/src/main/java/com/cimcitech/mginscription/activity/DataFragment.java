@@ -71,7 +71,7 @@ public class DataFragment extends Fragment {
     private Unbinder unbinder;
     private View statisticsLeftAxisView, statisticsRightRegisterView;
     private ShapeLoadingDialog dialog;
-    private int type = 1;//1表示轴状态，2表示寄存器
+    private int type = 2;//1表示寄存器，2表示轴状态
     private DataAxisXAdapter xAdapter;
     private DataAxisYAdapter yAdapter;
     private DataRegisterCAdapter cAdapter;
@@ -128,7 +128,7 @@ public class DataFragment extends Fragment {
     public void onclick(View view) {
         switch (view.getId()) {
             case R.id.axis_view:
-                type = 1;
+                type = 2;
                 axisLineIv.setVisibility(View.VISIBLE);
                 registerLineIv.setVisibility(View.INVISIBLE);
                 statisticsLeftAxisView.setVisibility(View.VISIBLE);
@@ -136,7 +136,7 @@ public class DataFragment extends Fragment {
                 getDeviceRegisterInfoData();
                 break;
             case R.id.register_view:
-                type = 2;
+                type = 1;
                 axisLineIv.setVisibility(View.INVISIBLE);
                 registerLineIv.setVisibility(View.VISIBLE);
                 statisticsLeftAxisView.setVisibility(View.GONE);
@@ -184,8 +184,7 @@ public class DataFragment extends Fragment {
                                 ResultVo resultVo = gson.fromJson(response, ResultVo.class);
                                 dialog.dismiss();
                                 if (resultVo.getData().getCode() == 1) {//正常返回
-                                    if (type == 1) {
-                                        //response
+                                    if (type == 2) {
                                         DeviceRegisterInfo1Vo info1Vo = gson.fromJson(response, DeviceRegisterInfo1Vo.class);
                                         if (info1Vo != null && info1Vo.getData() != null && info1Vo.getData().getInfo() != null)
                                             if (info1Vo.getData().getInfo().size() > 0) {
@@ -198,8 +197,7 @@ public class DataFragment extends Fragment {
                                                 if (y != null && y.size() > 0)
                                                     initAxisYData(y);
                                             }
-                                    } else if (type == 2) {
-                                        //response
+                                    } else if (type == 1) {
                                         DeviceRegisterInfo2Vo info2Vo = gson.fromJson(response, DeviceRegisterInfo2Vo.class);
                                         if (info2Vo.getData().getInfo().size() > 0) {
                                             for (int i = 0; i < info2Vo.getData().getInfo().size(); i++) {

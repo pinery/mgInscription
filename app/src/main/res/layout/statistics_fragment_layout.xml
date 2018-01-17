@@ -140,7 +140,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/countMakeNum_tv"
+                    android:id="@+id/sumMakeNum_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -173,6 +173,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/productivity_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"

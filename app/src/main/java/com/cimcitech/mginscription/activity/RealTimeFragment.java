@@ -3,7 +3,6 @@ package com.cimcitech.mginscription.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -27,7 +26,6 @@ import com.cimcitech.mginscription.model.DeviceVo;
 import com.cimcitech.mginscription.model.ResultVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
 import com.cimcitech.mginscription.utils.ToastUtil;
-import com.cimcitech.mginscription.widget.CustomScrollView;
 import com.cimcitech.mginscription.widget.ShapeLoadingDialog;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -47,7 +45,6 @@ import okhttp3.Call;
  */
 
 public class RealTimeFragment extends Fragment {
-
 
     @BindView(R.id.device_num_tv)
     TextView deviceNumTv;
@@ -71,8 +68,6 @@ public class RealTimeFragment extends Fragment {
     TextView ambienthumidityTv;
     @BindView(R.id.sumTime_layout)
     RelativeLayout sumTimeLayout;
-    @BindView(R.id.scrollView)
-    CustomScrollView scrollView;
 
     private Unbinder unbinder;
     private PopupWindow pop;//pop
