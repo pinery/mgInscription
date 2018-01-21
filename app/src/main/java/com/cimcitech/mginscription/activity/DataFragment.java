@@ -3,6 +3,8 @@ package com.cimcitech.mginscription.activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +70,8 @@ public class DataFragment extends Fragment {
     @BindView(R.id.register_d_grid)
     MyGridView registerDGrid;
 
+    private Handler uiHandler = null;
+    private final int REQUEST_RESULT = 1000;
     private Unbinder unbinder;
     private View statisticsLeftAxisView, statisticsRightRegisterView;
     private ShapeLoadingDialog dialog;
@@ -87,8 +91,22 @@ public class DataFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         statisticsLeftAxisView = view.findViewById(R.id.statistics_left_axis_view);
         statisticsRightRegisterView = view.findViewById(R.id.statistics_right_register_view);
+        initHandler();
         initView();
         return view;
+    }
+
+
+    private void initHandler() {
+        uiHandler = new Handler() {
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case REQUEST_RESULT:// 显示加载中....
+                        getDeviceRegisterInfoData();
+                        break;
+                }
+            }
+        };
     }
 
     public void initView() {
@@ -108,7 +126,7 @@ public class DataFragment extends Fragment {
                 protected Void doInBackground(Void... voids) {
                     try {
                         Thread.sleep(1000);
-                        getDeviceRegisterInfoData();
+                        uiHandler.sendEmptyMessage(REQUEST_RESULT);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

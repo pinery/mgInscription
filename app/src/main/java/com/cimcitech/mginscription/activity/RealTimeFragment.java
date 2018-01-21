@@ -3,7 +3,10 @@ package com.cimcitech.mginscription.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -26,6 +29,7 @@ import com.cimcitech.mginscription.model.DeviceVo;
 import com.cimcitech.mginscription.model.ResultVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
 import com.cimcitech.mginscription.utils.ToastUtil;
+import com.cimcitech.mginscription.widget.CustomScrollView;
 import com.cimcitech.mginscription.widget.ShapeLoadingDialog;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -68,6 +72,8 @@ public class RealTimeFragment extends Fragment {
     TextView ambienthumidityTv;
     @BindView(R.id.sumTime_layout)
     RelativeLayout sumTimeLayout;
+    @BindView(R.id.scrollView)
+    CustomScrollView scrollView;
 
     private Unbinder unbinder;
     private PopupWindow pop;//pop
@@ -79,11 +85,14 @@ public class RealTimeFragment extends Fragment {
     private ShapeLoadingDialog dialog;
     private DeviceVo deviceVo;
     private DeviceVo.DataBean.InfoBean info; //默认显示该设备的数据
+    private Handler uiHandler = null;
+    private final int REQUEST_RESULT = 1000;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.real_time_fragment_layout, container, false);
         unbinder = ButterKnife.bind(this, view);
+        initHandler();
         initView();
         return view;
     }
@@ -93,6 +102,45 @@ public class RealTimeFragment extends Fragment {
         //获取设备信息
         dialog = new ShapeLoadingDialog(getActivity());
         dialog.setLoadingText("正在加载数据...");
+        scrollView.setOnRefreshListener(new setPullRefreshListener());
+    }
+
+    private void initHandler() {
+        uiHandler = new Handler() {
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case REQUEST_RESULT:// 显示加载中....
+                        getUserDeviceInfoData();
+                        break;
+                }
+            }
+        };
+    }
+
+    class setPullRefreshListener implements CustomScrollView.OnRefreshListener {
+
+        @Override
+        public void onRefresh() {
+            new AsyncTask<Void, Void, Void>() {
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    try {
+                        Thread.sleep(1000);
+                        uiHandler.sendEmptyMessage(REQUEST_RESULT);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    super.onPostExecute(aVoid);
+                    scrollView.onRefreshComplete();
+                }
+            }.execute();
+        }
     }
 
     @Override

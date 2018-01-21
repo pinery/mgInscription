@@ -54,12 +54,14 @@
             android:background="@drawable/layout_bg_white_f7f6fb" />
 
         <LinearLayout
+            android:id="@+id/not_device_view"
             android:layout_width="match_parent"
             android:layout_height="100dip"
             android:layout_marginLeft="15dip"
             android:layout_marginRight="15dip"
             android:background="@drawable/layout_bg_white_ffffff"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <ImageView
                 android:layout_width="45dip"
@@ -73,10 +75,64 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dip"
                 android:gravity="center_horizontal"
-                android:text="扫一扫读取终端编码及IMEI号码"
+                android:text="扫一扫读取终端编码及IMEI号码注册"
                 android:textColor="@color/black6"
                 android:textSize="14sp" />
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/have_device_view"
+            android:layout_width="match_parent"
+            android:layout_height="100dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:background="@drawable/layout_bg_white_ffffff"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/load_more_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dip"
+                android:drawableRight="@mipmap/icon_more_next"
+                android:lineSpacingExtra="3dip"
+                android:text="重新\n扫描"
+                android:textColor="@color/black6"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/load_more_tv"
+                android:orientation="vertical"
+                android:paddingLeft="10dip">
+
+                <TextView
+                    android:id="@+id/device_num_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="bottom"
+                    android:paddingBottom="5dip"
+                    android:text="终端编号 "
+                    android:textColor="@color/black6"
+                    android:textSize="@dimen/font_14" />
+
+                <TextView
+                    android:id="@+id/driver_IEMI_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="top"
+                    android:paddingTop="5dip"
+                    android:text="IMEI号码 "
+                    android:textColor="@color/black6"
+                    android:textSize="@dimen/font_14" />
+            </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
     <LinearLayout
@@ -131,7 +187,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dip"
             android:gravity="center"
-            android:text="IEMI号码"
+            android:text="IMEI号码"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
@@ -167,7 +223,7 @@
         android:layout_marginRight="30dip"
         android:layout_marginTop="40dip"
         android:background="@drawable/submit_button_bg"
-        android:text="注册"
+        android:text="手动输入注册"
         android:textColor="@color/white"
         android:textSize="15sp" />
 </LinearLayout>

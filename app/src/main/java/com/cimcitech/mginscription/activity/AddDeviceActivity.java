@@ -10,7 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cimcitech.mginscription.R;
@@ -49,9 +51,18 @@ public class AddDeviceActivity extends AppCompatActivity {
     EditText driverIEMIEt;
     @BindView(R.id.close_IEMI_iv)
     ImageView closeIEMIIv;
+    @BindView(R.id.not_device_view)
+    LinearLayout notDeviceView;
+    @BindView(R.id.device_num_tv)
+    TextView deviceNumTv;
+    @BindView(R.id.driver_IEMI_tv)
+    TextView driverIEMITv;
+    @BindView(R.id.have_device_view)
+    RelativeLayout haveDeviceView;
 
     public static final int REQUEST_CODE = 1000;
     private ShapeLoadingDialog dialog;
+    private String deviceNumber, deviceImei; //扫描获得的编号和IMEI号码
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,9 +123,19 @@ public class AddDeviceActivity extends AppCompatActivity {
                             String[] str1 = strings[0].split(":");
                             String[] str2 = strings[1].split(":");
                             if (!ConfigUtil.isEmpty(str1) && str1.length == 2)
-                                driverNumberEt.setText(str1[1]);
+                                deviceNumber = str1[1];
                             if (!ConfigUtil.isEmpty(str2) && str2.length == 2)
-                                driverIEMIEt.setText(str2[1]);
+                                deviceImei = str2[1];
+                            if (!ConfigUtil.isEmpty(deviceNumber) && !ConfigUtil.isEmpty(deviceImei)) {
+                                notDeviceView.setVisibility(View.INVISIBLE);
+                                haveDeviceView.setVisibility(View.VISIBLE);
+                                deviceNumTv.setText("终端编码：  " + deviceNumber);
+                                driverIEMITv.setText("IMEI号码：  " + deviceImei);
+                                getDeviceRegisterData();//注册设备了
+                            } else {
+                                notDeviceView.setVisibility(View.VISIBLE);
+                                haveDeviceView.setVisibility(View.INVISIBLE);
+                            }
                         } else
                             ToastUtil.showToast("无效二维码/条码，请重新扫描");
                     } else
@@ -131,22 +152,22 @@ public class AddDeviceActivity extends AppCompatActivity {
         if (driverNumberEt.getText().toString().trim().equals("")) {
             ToastUtil.showToast("设备编号不能为空");
             return false;
-        }
+        } else
+            deviceNumber = driverNumberEt.getText().toString().trim();
         if (driverIEMIEt.getText().toString().trim().equals("")) {
-            ToastUtil.showToast("IEMI号码不能为空");
+            ToastUtil.showToast("IMEI号码不能为空");
             return false;
-        }
+        } else
+            deviceImei = driverIEMIEt.getText().toString().trim();
         return true;
     }
 
     public void getDeviceRegisterData() {
         dialog.show();
-        String deviceNum = driverNumberEt.getText().toString().trim();
-        String deviceSn = driverIEMIEt.getText().toString().trim();
-        String data = new Gson().toJson(new DeviceRegister(deviceNum, deviceSn, ConfigUtil.GET_TIME()));
+        String data = new Gson().toJson(new DeviceRegister(deviceNumber, deviceImei, ConfigUtil.GET_TIME()));
         Map map = new HashMap();
-        map.put("device_num", deviceNum);
-        map.put("device_sn", deviceSn);
+        map.put("device_num", deviceNumber);
+        map.put("device_sn", deviceImei);
         map.put("time", ConfigUtil.GET_TIME());
         String sign = ConfigUtil.GET_SIGN(map);
         getDeviceRegister(data, sign);
