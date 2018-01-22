@@ -83,7 +83,7 @@ public class SettingActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick({R.id.back_ib, R.id.out_login_bt, R.id.user_password_tv, R.id.nickname_tv})
+    @OnClick({R.id.back_ib, R.id.out_login_bt, R.id.user_password_tv, R.id.nickname_tv,R.id.about_view})
     public void onclick(View view) {
         switch (view.getId()) {
             case R.id.back_ib:
@@ -100,6 +100,9 @@ public class SettingActivity extends AppCompatActivity {
                 break;
             case R.id.nickname_tv:
                 popEditText.showAtLocation(view, Gravity.CENTER, 0, 0);
+                break;
+            case R.id.about_view:
+                startActivity(new Intent(SettingActivity.this, AboutActivity.class));
                 break;
         }
     }

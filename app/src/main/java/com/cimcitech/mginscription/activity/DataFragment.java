@@ -96,17 +96,18 @@ public class DataFragment extends Fragment {
         return view;
     }
 
-
-    private void initHandler() {
-        uiHandler = new Handler() {
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
+    public void initHandler() {
+        uiHandler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message message) {
+                switch (message.what) {
                     case REQUEST_RESULT:// 显示加载中....
                         getDeviceRegisterInfoData();
                         break;
                 }
+                return false;
             }
-        };
+        });
     }
 
     public void initView() {
@@ -116,29 +117,31 @@ public class DataFragment extends Fragment {
         getDeviceRegisterInfoData();
     }
 
+    private class MyTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Thread.sleep(1000);
+                uiHandler.sendEmptyMessage(REQUEST_RESULT);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            scrollView.onRefreshComplete();
+        }
+    }
+
     class setPullRefreshListener implements CustomScrollView.OnRefreshListener {
 
         @Override
         public void onRefresh() {
-            new AsyncTask<Void, Void, Void>() {
-
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    try {
-                        Thread.sleep(1000);
-                        uiHandler.sendEmptyMessage(REQUEST_RESULT);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-
-                @Override
-                protected void onPostExecute(Void aVoid) {
-                    super.onPostExecute(aVoid);
-                    scrollView.onRefreshComplete();
-                }
-            }.execute();
+            new MyTask().execute();//下拉刷新
         }
     }
 

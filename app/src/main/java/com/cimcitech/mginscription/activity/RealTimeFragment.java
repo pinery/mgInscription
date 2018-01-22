@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -60,10 +61,6 @@ public class RealTimeFragment extends Fragment {
     TextView startTimeTimeTv;
     @BindView(R.id.startTime_date_tv)
     TextView startTimeDateTv;
-    @BindView(R.id.endTime_time_tv)
-    TextView endTimeTimeTv;
-    @BindView(R.id.endTime_date_tv)
-    TextView endTimeDateTv;
     @BindView(R.id.makenum_tv)
     TextView makenumTv;
     @BindView(R.id.ambienttemperature_tv)
@@ -74,6 +71,14 @@ public class RealTimeFragment extends Fragment {
     RelativeLayout sumTimeLayout;
     @BindView(R.id.scrollView)
     CustomScrollView scrollView;
+    @BindView(R.id.sumTime_tv)
+    TextView sumTimeTv;
+    @BindView(R.id.countmakenum_tv)
+    TextView countmakenumTv;
+    @BindView(R.id.maintenance_time_tv)
+    TextView maintenanceTimeTv;
+    @BindView(R.id.maintenance_bt)
+    Button maintenanceBt;
 
     private Unbinder unbinder;
     private PopupWindow pop;//pop
@@ -97,6 +102,11 @@ public class RealTimeFragment extends Fragment {
         return view;
     }
 
+    @OnClick(R.id.close_sumTime_view)
+    public void onclick() {
+        sumTimeLayout.setVisibility(View.INVISIBLE);
+    }
+
     private void initView() {
         showCancelPopWin(getActivity());
         //获取设备信息
@@ -105,41 +115,45 @@ public class RealTimeFragment extends Fragment {
         scrollView.setOnRefreshListener(new setPullRefreshListener());
     }
 
-    private void initHandler() {
-        uiHandler = new Handler() {
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
+    public void initHandler() {
+        uiHandler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message message) {
+                switch (message.what) {
                     case REQUEST_RESULT:// 显示加载中....
                         getUserDeviceInfoData();
                         break;
                 }
+                return false;
             }
-        };
+        });
+    }
+
+    private class MyTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Thread.sleep(1000);
+                uiHandler.sendEmptyMessage(REQUEST_RESULT);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            scrollView.onRefreshComplete();
+        }
     }
 
     class setPullRefreshListener implements CustomScrollView.OnRefreshListener {
 
         @Override
         public void onRefresh() {
-            new AsyncTask<Void, Void, Void>() {
-
-                @Override
-                protected Void doInBackground(Void... voids) {
-                    try {
-                        Thread.sleep(1000);
-                        uiHandler.sendEmptyMessage(REQUEST_RESULT);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-
-                @Override
-                protected void onPostExecute(Void aVoid) {
-                    super.onPostExecute(aVoid);
-                    scrollView.onRefreshComplete();
-                }
-            }.execute();
+            new MyTask().execute();//下拉刷新
         }
     }
 
@@ -294,8 +308,6 @@ public class RealTimeFragment extends Fragment {
                                             startActivity(new Intent(getActivity(), LoginActivity.class));
                                         } else
                                             ToastUtil.showToast(resultVo.getData().getReturnmsg());
-
-
                             }
                         }
                 );
@@ -332,23 +344,7 @@ public class RealTimeFragment extends Fragment {
                                             if (deviceInfoVo.getData() != null && deviceInfoVo.getData().getInfo() != null)
                                                 if (deviceInfoVo.getData().getInfo().size() > 0) {
                                                     DeviceInfoVo.DataBean.InfoBean info = deviceInfoVo.getData().getInfo().get(0);
-                                                    workTimeTv.setText(info.getWork_time() + "h");
-                                                    if (info.getStartTime() != null) {
-                                                        String[] time = info.getStartTime().split(" ");
-                                                        if (time.length > 0 && time.length == 2) {
-                                                            startTimeTimeTv.setText(time[1]);
-                                                            startTimeDateTv.setText(time[0]);
-                                                        }
-                                                    }
-                                                    makenumTv.setText(info.getMakenum() != null ? info.getMakenum() : "-");
-                                                    ambienttemperatureTv.setText(info.getAmbienttemperature() != null
-                                                            ? info.getAmbienttemperature() : "-");
-                                                    ambienthumidityTv.setText(info.getAmbienthumidity() != null
-                                                            ? info.getAmbienthumidity() : "-");
-                                                    if (info.getSumTime() >= 1) {
-                                                        sumTimeLayout.setVisibility(View.VISIBLE);
-                                                    } else
-                                                        sumTimeLayout.setVisibility(View.INVISIBLE);
+                                                    setXmlViewData(info);
                                                 }
                                         } else if (resultVo.getData().getCode() == 2) {//登录超时
                                             ToastUtil.showToast("登录超时，请重新登录");
@@ -357,7 +353,6 @@ public class RealTimeFragment extends Fragment {
                                             startActivity(new Intent(getActivity(), LoginActivity.class));
                                         } else
                                             ToastUtil.showToast(resultVo.getData().getReturnmsg());
-
                             }
                         }
                 );
@@ -383,6 +378,30 @@ public class RealTimeFragment extends Fragment {
         public GetUserDeviceInfo(String time, String device_num) {
             this.time = time;
             this.device_num = device_num;
+        }
+    }
+
+    //设置页面数据
+    public void setXmlViewData(DeviceInfoVo.DataBean.InfoBean info) {
+        if (info != null) {
+            workTimeTv.setText(info.getWork_time() + "h");
+            if (info.getStartTime() != null) {
+                String[] time = info.getStartTime().split(" ");
+                if (time.length > 0 && time.length == 2) {
+                    startTimeTimeTv.setText(time[1]);
+                    startTimeDateTv.setText(time[0]);
+                }
+            }
+            countmakenumTv.setText(info.getMakenum() != null ? info.getMakenum() : "-");
+            ambienttemperatureTv.setText(info.getAmbienttemperature() != null ? info.getAmbienttemperature() : "-");
+            ambienthumidityTv.setText(info.getAmbienthumidity() != null ? info.getAmbienthumidity() + "%" : "-");
+            if (info.getSumTime() > 0) {
+                sumTimeLayout.setVisibility(View.VISIBLE);
+                maintenanceTimeTv.setText("距离下次维保还有" + (5000 - info.getSumTime()) + "小时");
+            } else
+                sumTimeLayout.setVisibility(View.INVISIBLE);
+            sumTimeTv.setText(info.getSumTime() + "");
+            makenumTv.setText(info.getCountmakenum() != null ? info.getCountmakenum() : "-");
         }
     }
 

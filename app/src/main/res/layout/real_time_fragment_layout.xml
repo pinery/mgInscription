@@ -34,7 +34,7 @@
     <com.cimcitech.mginscription.widget.CustomScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:scrollbars="none">
 
         <LinearLayout
@@ -69,7 +69,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="10dip"
-                        android:text="运行时长"
+                        android:text="工作小时数"
                         android:textColor="#c1c5dc"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -121,20 +121,19 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/endTime_time_tv"
+                        android:id="@+id/sumTime_tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="--:--"
+                        android:text="-"
                         android:textColor="@color/black"
                         android:textSize="22sp" />
 
                     <TextView
-                        android:id="@+id/endTime_date_tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="0000-00-00"
+                        android:text="（h）"
                         android:textColor="#64698f"
                         android:textSize="14sp" />
 
@@ -143,7 +142,40 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="10dip"
-                        android:text="关机时间"
+                        android:text="运行时间"
+                        android:textColor="@color/black6"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/countmakenum_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="-"
+                        android:textColor="@color/black"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="（cps）"
+                        android:textColor="#64698f"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="10dip"
+                        android:text="生成总量"
                         android:textColor="@color/black6"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -278,37 +310,61 @@
                 android:layout_marginBottom="15dip"
                 android:layout_marginTop="10dip">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100dip"
+                    android:layout_height="75dip"
                     android:layout_marginLeft="15dip"
                     android:layout_marginRight="15dip"
                     android:layout_marginTop="10dip"
-                    android:background="@drawable/layout_bg_white_ffffff"
-                    android:orientation="vertical">
+                    android:background="@drawable/layout_bg_white_ffffff">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:padding="10dip"
-                        android:text="维保提醒"
-                        android:textColor="@color/black"
-                        android:textSize="17sp" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:lineSpacingExtra="3dip"
-                        android:paddingLeft="10dip"
-                        android:paddingRight="10dip"
-                        android:text="@string/warranty_reminder"
-                        android:textColor="#9698ad"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="bottom"
+                            android:paddingBottom="3dip"
+                            android:paddingLeft="10dip"
+                            android:text="维保提醒"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/maintenance_time_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="top"
+                            android:lineSpacingExtra="3dip"
+                            android:lines="1"
+                            android:paddingLeft="10dip"
+                            android:paddingTop="3dip"
+                            android:singleLine="true"
+                            android:text="距离下次维保还有352小时"
+                            android:textColor="#9698ad"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/maintenance_bt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dip"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="15dip"
+                        android:background="@drawable/submit_button_min_bg"
+                        android:text="完成维保"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+                </RelativeLayout>
 
                 <ImageView
+                    android:id="@+id/close_sumTime_view"
                     android:layout_width="30dip"
                     android:layout_height="30dip"
                     android:layout_alignParentRight="true"
