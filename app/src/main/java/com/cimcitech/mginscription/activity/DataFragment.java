@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,8 +25,8 @@ import com.cimcitech.mginscription.model.ResultVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
 import com.cimcitech.mginscription.utils.ToastUtil;
 import com.cimcitech.mginscription.widget.CustomScrollView;
-import com.cimcitech.mginscription.widget.MyGridView;
 import com.cimcitech.mginscription.widget.ShapeLoadingDialog;
+import com.cimcitech.mginscription.widget.Utility;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -47,33 +48,45 @@ import okhttp3.Call;
 
 public class DataFragment extends Fragment {
 
-    @BindView(R.id.axis_tv)
-    TextView axisTv;
-    @BindView(R.id.axis_view)
-    RelativeLayout axisView;
-    @BindView(R.id.register_tv)
-    TextView registerTv;
-    @BindView(R.id.register_view)
-    RelativeLayout registerView;
-    @BindView(R.id.axis_line_iv)
-    ImageView axisLineIv;
-    @BindView(R.id.register_line_iv)
-    ImageView registerLineIv;
+    @BindView(R.id.axis_x_tv)
+    TextView axisXTv;
+    @BindView(R.id.axis_x_line_iv)
+    ImageView axisXLineIv;
+    @BindView(R.id.axis_x_view)
+    RelativeLayout axisXView;
+    @BindView(R.id.axis_y_tv)
+    TextView axisYTv;
+    @BindView(R.id.axis_y_line_iv)
+    ImageView axisYLineIv;
+    @BindView(R.id.axis_y_view)
+    RelativeLayout axisYView;
+    @BindView(R.id.register_c_tv)
+    TextView registerCTv;
+    @BindView(R.id.register_c_line_iv)
+    ImageView registerCLineIv;
+    @BindView(R.id.register_c_view)
+    RelativeLayout registerCView;
+    @BindView(R.id.register_d_tv)
+    TextView registerDTv;
+    @BindView(R.id.register_d_line_iv)
+    ImageView registerDLineIv;
+    @BindView(R.id.register_d_view)
+    RelativeLayout registerDView;
     @BindView(R.id.scrollView)
     CustomScrollView scrollView;
-    @BindView(R.id.axis_x_grid)
-    MyGridView axisXGrid;
-    @BindView(R.id.axis_y_grid)
-    MyGridView axisYGrid;
-    @BindView(R.id.register_c_grid)
-    MyGridView registerCGrid;
-    @BindView(R.id.register_d_grid)
-    MyGridView registerDGrid;
+    @BindView(R.id.listContent_x)
+    ListView listContentX;
+    @BindView(R.id.listContent_y)
+    ListView listContentY;
+    @BindView(R.id.listContent_c)
+    ListView listContentC;
+    @BindView(R.id.listContent_d)
+    ListView listContentD;
 
     private Handler uiHandler = null;
     private final int REQUEST_RESULT = 1000;
     private Unbinder unbinder;
-    private View statisticsLeftAxisView, statisticsRightRegisterView;
+    private View axisXLayout, axisYLayout, registerCLayout, registerDLayout;
     private ShapeLoadingDialog dialog;
     private int type = 2;//1表示寄存器，2表示轴状态
     private DataAxisXAdapter xAdapter;
@@ -89,8 +102,10 @@ public class DataFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.data_fragment_layout, container, false);
         unbinder = ButterKnife.bind(this, view);
-        statisticsLeftAxisView = view.findViewById(R.id.statistics_left_axis_view);
-        statisticsRightRegisterView = view.findViewById(R.id.statistics_right_register_view);
+        axisXLayout = view.findViewById(R.id.statistics_axis_x_view);
+        axisYLayout = view.findViewById(R.id.statistics_axis_y_view);
+        registerCLayout = view.findViewById(R.id.statistics_register_c_view);
+        registerDLayout = view.findViewById(R.id.statistics_register_d_view);
         initHandler();
         initView();
         return view;
@@ -145,25 +160,38 @@ public class DataFragment extends Fragment {
         }
     }
 
-    @OnClick({R.id.axis_view, R.id.register_view})
+    @OnClick({R.id.axis_x_view, R.id.axis_y_view, R.id.register_c_view, R.id.register_d_view})
     public void onclick(View view) {
         switch (view.getId()) {
-            case R.id.axis_view:
-                type = 2;
-                axisLineIv.setVisibility(View.VISIBLE);
-                registerLineIv.setVisibility(View.INVISIBLE);
-                statisticsLeftAxisView.setVisibility(View.VISIBLE);
-                statisticsRightRegisterView.setVisibility(View.GONE);
-                getDeviceRegisterInfoData();
+            case R.id.axis_x_view:
+                showLineView(axisXLineIv, axisXLayout, 2);
                 break;
-            case R.id.register_view:
-                type = 1;
-                axisLineIv.setVisibility(View.INVISIBLE);
-                registerLineIv.setVisibility(View.VISIBLE);
-                statisticsLeftAxisView.setVisibility(View.GONE);
-                statisticsRightRegisterView.setVisibility(View.VISIBLE);
-                getDeviceRegisterInfoData();
+            case R.id.axis_y_view:
+                showLineView(axisYLineIv, axisYLayout, 2);
                 break;
+            case R.id.register_c_view:
+                showLineView(registerCLineIv, registerCLayout, 1);
+                break;
+            case R.id.register_d_view:
+                showLineView(registerDLineIv, registerDLayout, 1);
+                break;
+        }
+    }
+
+    public void showLineView(ImageView imageView, View view, int num) {
+        axisXLineIv.setVisibility(View.INVISIBLE);
+        axisYLineIv.setVisibility(View.INVISIBLE);
+        registerCLineIv.setVisibility(View.INVISIBLE);
+        registerDLineIv.setVisibility(View.INVISIBLE);
+        imageView.setVisibility(View.VISIBLE);
+        axisXLayout.setVisibility(View.GONE);
+        axisYLayout.setVisibility(View.GONE);
+        registerCLayout.setVisibility(View.GONE);
+        registerDLayout.setVisibility(View.GONE);
+        view.setVisibility(View.VISIBLE);
+        if (type != num) {
+            type = num;
+            getDeviceRegisterInfoData();
         }
     }
 
@@ -245,26 +273,26 @@ public class DataFragment extends Fragment {
 
     public void initAxisXData(List<List<String>> x) {
         xAdapter = new DataAxisXAdapter(getActivity(), x);
-        axisXGrid.setAdapter(xAdapter);
-        axisXGrid.setSelector(R.drawable.hide_listview_yellow_selector);
+        listContentX.setAdapter(xAdapter);
+        new Utility().setListViewHeightBasedOnChildren(listContentX);
     }
 
     public void initAxisYData(List<List<String>> y) {
         yAdapter = new DataAxisYAdapter(getActivity(), y);
-        axisYGrid.setAdapter(yAdapter);
-        axisYGrid.setSelector(R.drawable.hide_listview_yellow_selector);
+        listContentY.setAdapter(yAdapter);
+        new Utility().setListViewHeightBasedOnChildren(listContentY);
     }
 
     public void initRegisterCData(List<List<String>> c) {
         cAdapter = new DataRegisterCAdapter(getActivity(), c);
-        registerCGrid.setAdapter(cAdapter);
-        registerCGrid.setSelector(R.drawable.hide_listview_yellow_selector);
+        listContentC.setAdapter(cAdapter);
+        new Utility().setListViewHeightBasedOnChildren(listContentC);
     }
 
     public void initRegisterDData(List<List<String>> d) {
         dAdapter = new DataRegisterDAdapter(getActivity(), d);
-        registerDGrid.setAdapter(dAdapter);
-        registerDGrid.setSelector(R.drawable.hide_listview_yellow_selector);
+        listContentD.setAdapter(dAdapter);
+        new Utility().setListViewHeightBasedOnChildren(listContentD);
     }
 
     class GetDeviceRegisterInfo {

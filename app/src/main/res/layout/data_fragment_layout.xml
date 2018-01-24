@@ -12,33 +12,33 @@
         android:orientation="horizontal">
 
         <RelativeLayout
-            android:id="@+id/axis_view"
+            android:id="@+id/axis_x_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/axis_tv"
+                android:id="@+id/axis_x_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="15dip"
-                android:gravity="right"
-                android:text="轴状态"
+                android:gravity="center"
+                android:text="X轴状态"
                 android:textColor="@color/black6"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:visibility="visible" />
 
             <ImageView
-                android:id="@+id/axis_line_iv"
+                android:id="@+id/axis_x_line_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="5dip"
-                android:layout_alignLeft="@+id/axis_tv"
-                android:layout_alignRight="@+id/axis_tv"
-                android:layout_below="@+id/axis_tv"
+                android:layout_alignLeft="@+id/axis_x_tv"
+                android:layout_alignRight="@+id/axis_x_tv"
+                android:layout_below="@+id/axis_x_tv"
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
                 android:layout_marginTop="3dip"
@@ -46,32 +46,101 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/register_view"
+            android:id="@+id/axis_y_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/register_tv"
+                android:id="@+id/axis_y_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dip"
-                android:gravity="right"
-                android:text="寄存器"
+                android:layout_marginRight="15dip"
+                android:gravity="center"
+                android:text="Y轴状态"
                 android:textColor="@color/black6"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:visibility="visible" />
 
             <ImageView
-                android:id="@+id/register_line_iv"
+                android:id="@+id/axis_y_line_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="5dip"
-                android:layout_alignLeft="@+id/register_tv"
-                android:layout_alignRight="@+id/register_tv"
-                android:layout_below="@+id/register_tv"
+                android:layout_alignLeft="@+id/axis_y_tv"
+                android:layout_alignRight="@+id/axis_y_tv"
+                android:layout_below="@+id/axis_y_tv"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"
+                android:layout_marginTop="3dip"
+                android:background="@drawable/text_line_color_636b8f"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/register_c_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/register_c_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dip"
+                android:gravity="center"
+                android:text="C寄存器"
+                android:textColor="@color/black6"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/register_c_line_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="5dip"
+                android:layout_alignLeft="@+id/register_c_tv"
+                android:layout_alignRight="@+id/register_c_tv"
+                android:layout_below="@+id/register_c_tv"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"
+                android:layout_marginTop="3dip"
+                android:background="@drawable/text_line_color_636b8f"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/register_d_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/register_d_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dip"
+                android:gravity="center"
+                android:text="D寄存器"
+                android:textColor="@color/black6"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/register_d_line_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="5dip"
+                android:layout_alignLeft="@+id/register_d_tv"
+                android:layout_alignRight="@+id/register_d_tv"
+                android:layout_below="@+id/register_d_tv"
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
                 android:layout_marginTop="3dip"
@@ -88,7 +157,7 @@
     <com.cimcitech.mginscription.widget.CustomScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:scrollbars="none">
 
         <LinearLayout
@@ -97,14 +166,35 @@
             android:orientation="vertical">
 
             <include
-                android:id="@+id/statistics_left_axis_view"
-                layout="@layout/statistics_left_axis_view"
+                android:id="@+id/statistics_axis_x_view"
+                layout="@layout/statistics_axis_x_view"
                 android:visibility="visible" />
 
             <include
-                android:id="@+id/statistics_right_register_view"
-                layout="@layout/statistics_right_register_view"
+                android:id="@+id/statistics_axis_y_view"
+                layout="@layout/statistics_axis_y_view"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/statistics_register_c_view"
+                layout="@layout/statistics_register_c_view"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/statistics_register_d_view"
+                layout="@layout/statistics_register_d_view"
                 android:visibility="gone" />
         </LinearLayout>
     </com.cimcitech.mginscription.widget.CustomScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:lineSpacingExtra="3dip"
+        android:padding="15dip"
+        android:text="@string/statistics_text"
+        android:textColor="@color/black6"
+        android:textSize="14sp" />
 </LinearLayout>

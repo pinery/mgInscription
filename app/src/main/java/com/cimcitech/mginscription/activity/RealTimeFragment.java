@@ -1,6 +1,8 @@
 package com.cimcitech.mginscription.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
@@ -102,11 +104,6 @@ public class RealTimeFragment extends Fragment {
         return view;
     }
 
-    @OnClick(R.id.close_sumTime_view)
-    public void onclick() {
-        sumTimeLayout.setVisibility(View.INVISIBLE);
-    }
-
     private void initView() {
         showCancelPopWin(getActivity());
         //获取设备信息
@@ -188,11 +185,29 @@ public class RealTimeFragment extends Fragment {
         GetDeviceInfo(data, sign);
     }
 
-    @OnClick({R.id.drop_down_iv})
+    @OnClick({R.id.drop_down_iv, R.id.close_sumTime_view, R.id.maintenance_bt})
     public void onclick(View view) {
         switch (view.getId()) {
             case R.id.drop_down_iv:
                 pop.showAtLocation(view, Gravity.CENTER, 0, 0);
+                break;
+            case R.id.close_sumTime_view:
+                sumTimeLayout.setVisibility(View.INVISIBLE);
+                break;
+            case R.id.maintenance_bt:
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("提示")
+                        .setMessage("确认完成维保？")
+                        .setCancelable(false)
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                sumTimeLayout.setVisibility(View.INVISIBLE);
+                            }
+                        })
+                        .setNegativeButton("取消", null).create().show();
+
                 break;
         }
     }

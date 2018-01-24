@@ -52,7 +52,7 @@ public class DataAxisXAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.data_axis_item_view, null);
             wrapper = new ViewHolder(convertView);
             convertView.setTag(wrapper);
-            convertView.setPadding(5, 10, 5, 10);
+            //convertView.setPadding(5, 10, 5, 10);
         } else {
             wrapper = (ViewHolder) convertView.getTag();
         }
