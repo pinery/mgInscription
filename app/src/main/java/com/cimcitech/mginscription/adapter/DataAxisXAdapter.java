@@ -59,9 +59,9 @@ public class DataAxisXAdapter extends BaseAdapter {
         if (item.size() >= 2) {
             wrapper.itemNumTv.setText("" + (position + 1));
             wrapper.itemValueTv.setText(item.get(0));
-            if (item.get(1).compareTo("0") == 1) {
+            if (item.get(1).equals("1")) {
                 wrapper.itemCb.setChecked(true);
-            } else if (item.get(1).compareTo("1") == 0)
+            } else if (item.get(1).equals("0"))
                 wrapper.itemCb.setChecked(false);
         }
         return convertView;

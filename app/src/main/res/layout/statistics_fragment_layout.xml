@@ -153,7 +153,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="生成总量"
+                    android:text="生产总量"
                     android:textColor="@color/black6"
                     android:textSize="14sp" />
 

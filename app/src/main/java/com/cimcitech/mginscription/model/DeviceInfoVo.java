@@ -7,9 +7,10 @@ import java.util.List;
  */
 
 public class DeviceInfoVo {
+
     /**
      * ret : 200
-     * data : {"code":1,"returnmsg":"success","info":[{"id":"16","update_time":"2017-07-23 13:46:41","dev_num":"B07070099","work_time":1208,"makenum":"56","ambienttemperature":null,"ambienthumidity":"0","countmakenum":null,"sumTime":40899,"startTime":null}]}
+     * data : {"code":1,"returnmsg":"success","info":[{"id":"16","update_time":"2017-07-23 13:46:41","dev_num":"B07070099","work_time":3,"ambienttemperature":"14","ambienthumidity":"96","countmakenum":"13","sumTime":213,"countMakeNum":24,"startTime":"2017-07-23 11:39:11","maintenance_time":213}]}
      * msg :
      */
 
@@ -45,7 +46,7 @@ public class DeviceInfoVo {
         /**
          * code : 1
          * returnmsg : success
-         * info : [{"id":"16","update_time":"2017-07-23 13:46:41","dev_num":"B07070099","work_time":1208,"makenum":"56","ambienttemperature":null,"ambienthumidity":"0","countmakenum":null,"sumTime":40899,"startTime":null}]
+         * info : [{"id":"16","update_time":"2017-07-23 13:46:41","dev_num":"B07070099","work_time":3,"ambienttemperature":"14","ambienthumidity":"96","countmakenum":"13","sumTime":213,"countMakeNum":24,"startTime":"2017-07-23 11:39:11","maintenance_time":213}]
          */
 
         private int code;
@@ -81,25 +82,27 @@ public class DeviceInfoVo {
              * id : 16
              * update_time : 2017-07-23 13:46:41
              * dev_num : B07070099
-             * work_time : 1208
-             * makenum : 56
-             * ambienttemperature : null
-             * ambienthumidity : 0
-             * countmakenum : null
-             * sumTime : 40899
-             * startTime : null
+             * work_time : 3
+             * ambienttemperature : 14
+             * ambienthumidity : 96
+             * countmakenum : 13
+             * sumTime : 213
+             * countMakeNum : 24
+             * startTime : 2017-07-23 11:39:11
+             * maintenance_time : 213
              */
 
             private String id;
             private String update_time;
             private String dev_num;
             private int work_time;
-            private String makenum;
             private String ambienttemperature;
             private String ambienthumidity;
             private String countmakenum;
             private int sumTime;
+            private int countMakeNum;
             private String startTime;
+            private int maintenance_time;
 
             public String getId() {
                 return id;
@@ -131,14 +134,6 @@ public class DeviceInfoVo {
 
             public void setWork_time(int work_time) {
                 this.work_time = work_time;
-            }
-
-            public String getMakenum() {
-                return makenum;
-            }
-
-            public void setMakenum(String makenum) {
-                this.makenum = makenum;
             }
 
             public String getAmbienttemperature() {
@@ -173,12 +168,28 @@ public class DeviceInfoVo {
                 this.sumTime = sumTime;
             }
 
+            public int getCountMakeNum() {
+                return countMakeNum;
+            }
+
+            public void setCountMakeNum(int countMakeNum) {
+                this.countMakeNum = countMakeNum;
+            }
+
             public String getStartTime() {
                 return startTime;
             }
 
             public void setStartTime(String startTime) {
                 this.startTime = startTime;
+            }
+
+            public int getMaintenance_time() {
+                return maintenance_time;
+            }
+
+            public void setMaintenance_time(int maintenance_time) {
+                this.maintenance_time = maintenance_time;
             }
         }
     }

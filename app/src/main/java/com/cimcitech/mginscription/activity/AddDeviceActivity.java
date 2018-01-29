@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.cimcitech.mginscription.R;
 import com.cimcitech.mginscription.model.ResultVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
+import com.cimcitech.mginscription.utils.MyActivityManager;
 import com.cimcitech.mginscription.utils.ToastUtil;
 import com.cimcitech.mginscription.widget.ShapeLoadingDialog;
 import com.google.gson.Gson;
@@ -73,6 +74,8 @@ public class AddDeviceActivity extends AppCompatActivity {
     }
 
     public void initView() {
+        MyActivityManager manager = MyActivityManager.getInstance();
+        manager.pushOneActivity(this);
         dialog = new ShapeLoadingDialog(this);
         dialog.setLoadingText("正在加载数据...");
         driverNumberEt.addTextChangedListener(new editTextChangedListener());

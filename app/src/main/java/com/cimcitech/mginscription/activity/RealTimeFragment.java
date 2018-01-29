@@ -31,6 +31,7 @@ import com.cimcitech.mginscription.model.DeviceInfoVo;
 import com.cimcitech.mginscription.model.DeviceVo;
 import com.cimcitech.mginscription.model.ResultVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
+import com.cimcitech.mginscription.utils.MyActivityManager;
 import com.cimcitech.mginscription.utils.ToastUtil;
 import com.cimcitech.mginscription.widget.CustomScrollView;
 import com.cimcitech.mginscription.widget.ShapeLoadingDialog;
@@ -105,6 +106,8 @@ public class RealTimeFragment extends Fragment {
     }
 
     private void initView() {
+        MyActivityManager manager = MyActivityManager.getInstance();
+        manager.pushOneActivity(getActivity());
         showCancelPopWin(getActivity());
         //获取设备信息
         dialog = new ShapeLoadingDialog(getActivity());
@@ -407,7 +410,7 @@ public class RealTimeFragment extends Fragment {
                     startTimeDateTv.setText(time[0]);
                 }
             }
-            countmakenumTv.setText(info.getMakenum() != null ? info.getMakenum() : "-");
+            countmakenumTv.setText(info.getCountMakeNum() + "");
             ambienttemperatureTv.setText(info.getAmbienttemperature() != null ? info.getAmbienttemperature() : "-");
             ambienthumidityTv.setText(info.getAmbienthumidity() != null ? info.getAmbienthumidity() + "%" : "-");
             if (info.getSumTime() > 0) {

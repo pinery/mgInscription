@@ -23,6 +23,7 @@ import com.cimcitech.mginscription.model.DeviceRegisterInfo1Vo;
 import com.cimcitech.mginscription.model.DeviceRegisterInfo2Vo;
 import com.cimcitech.mginscription.model.ResultVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
+import com.cimcitech.mginscription.utils.MyActivityManager;
 import com.cimcitech.mginscription.utils.ToastUtil;
 import com.cimcitech.mginscription.widget.CustomScrollView;
 import com.cimcitech.mginscription.widget.ShapeLoadingDialog;
@@ -126,6 +127,8 @@ public class DataFragment extends Fragment {
     }
 
     public void initView() {
+        MyActivityManager manager = MyActivityManager.getInstance();
+        manager.pushOneActivity(getActivity());
         scrollView.setOnRefreshListener(new setPullRefreshListener());
         dialog = new ShapeLoadingDialog(getActivity());
         dialog.setLoadingText("正在加载...");

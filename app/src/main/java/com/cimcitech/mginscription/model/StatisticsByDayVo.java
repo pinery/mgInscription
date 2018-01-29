@@ -8,9 +8,10 @@ import java.util.List;
 
 public class StatisticsByDayVo {
 
+
     /**
      * ret : 200
-     * data : {"code":1,"returnmsg":"success","info":[{"id":"16","dev_num":"B07070099","countmakenum":"13","work_time":22,"sumMakeNum":22,"Productivity":"29%","sumTime":76},{"id":"17","dev_num":"B07070098","countmakenum":"10","work_time":21,"sumMakeNum":22,"Productivity":"29%","sumTime":76}]}
+     * data : {"code":1,"returnmsg":"success","info":[{"id":"16","dev_num":"B07070099","countmakenum":"13","work_time":213,"countMakeNum":24,"Productivity":11,"sumTime":213}]}
      * msg :
      */
 
@@ -46,7 +47,7 @@ public class StatisticsByDayVo {
         /**
          * code : 1
          * returnmsg : success
-         * info : [{"id":"16","dev_num":"B07070099","countmakenum":"13","work_time":22,"sumMakeNum":22,"Productivity":"29%","sumTime":76},{"id":"17","dev_num":"B07070098","countmakenum":"10","work_time":21,"sumMakeNum":22,"Productivity":"29%","sumTime":76}]
+         * info : [{"id":"16","dev_num":"B07070099","countmakenum":"13","work_time":213,"countMakeNum":24,"Productivity":11,"sumTime":213}]
          */
 
         private int code;
@@ -82,18 +83,18 @@ public class StatisticsByDayVo {
              * id : 16
              * dev_num : B07070099
              * countmakenum : 13
-             * work_time : 22
-             * sumMakeNum : 22
-             * Productivity : 29%
-             * sumTime : 76
+             * work_time : 213
+             * countMakeNum : 24
+             * Productivity : 11
+             * sumTime : 213
              */
 
             private String id;
             private String dev_num;
             private String countmakenum;
             private int work_time;
-            private int sumMakeNum;
-            private String Productivity;
+            private int countMakeNum;
+            private int Productivity;
             private int sumTime;
 
             public String getId() {
@@ -128,19 +129,19 @@ public class StatisticsByDayVo {
                 this.work_time = work_time;
             }
 
-            public int getSumMakeNum() {
-                return sumMakeNum;
+            public int getCountMakeNum() {
+                return countMakeNum;
             }
 
-            public void setSumMakeNum(int sumMakeNum) {
-                this.sumMakeNum = sumMakeNum;
+            public void setCountMakeNum(int countMakeNum) {
+                this.countMakeNum = countMakeNum;
             }
 
-            public String getProductivity() {
+            public int getProductivity() {
                 return Productivity;
             }
 
-            public void setProductivity(String Productivity) {
+            public void setProductivity(int Productivity) {
                 this.Productivity = Productivity;
             }
 

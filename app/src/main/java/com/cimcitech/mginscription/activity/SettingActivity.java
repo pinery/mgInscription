@@ -22,6 +22,7 @@ import com.cimcitech.mginscription.R;
 import com.cimcitech.mginscription.model.ResultVo;
 import com.cimcitech.mginscription.model.UserInfoVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
+import com.cimcitech.mginscription.utils.MyActivityManager;
 import com.cimcitech.mginscription.utils.ToastUtil;
 import com.cimcitech.mginscription.widget.ShapeLoadingDialog;
 import com.google.gson.Gson;
@@ -56,9 +57,11 @@ public class SettingActivity extends AppCompatActivity {
     TextView updateVersionTv;
     @BindView(R.id.out_login_bt)
     Button outLoginBt;
+
     private UserInfoVo userInfoVo;
     private PopupWindow popEditText;
     private ShapeLoadingDialog dialog;
+    private MyActivityManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,8 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     public void initView() {
+        manager = MyActivityManager.getInstance();
+        manager.pushOneActivity(this);
         dialog = new ShapeLoadingDialog(SettingActivity.this);
         dialog.setLoadingText("正在加载数据...");
         showEditMobilePopWin();
@@ -83,7 +88,7 @@ public class SettingActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick({R.id.back_ib, R.id.out_login_bt, R.id.user_password_tv, R.id.nickname_tv,R.id.about_view})
+    @OnClick({R.id.back_ib, R.id.out_login_bt, R.id.user_password_tv, R.id.nickname_tv, R.id.about_view})
     public void onclick(View view) {
         switch (view.getId()) {
             case R.id.back_ib:
@@ -93,7 +98,7 @@ public class SettingActivity extends AppCompatActivity {
                 startActivity(new Intent(SettingActivity.this, LoginActivity.class));
                 ConfigUtil.isOutLogin = true;
                 ConfigUtil.isLogin = false;
-                finish();
+                manager.finishAllActivity();
                 break;
             case R.id.user_password_tv:
                 startActivity(new Intent(SettingActivity.this, UpdatePasswordActivity.class));

@@ -13,6 +13,7 @@ import com.cimcitech.mginscription.R;
 import com.cimcitech.mginscription.model.ResultVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
 import com.cimcitech.mginscription.utils.MD5Util;
+import com.cimcitech.mginscription.utils.MyActivityManager;
 import com.cimcitech.mginscription.utils.ToastUtil;
 import com.cimcitech.mginscription.widget.ShapeLoadingDialog;
 import com.google.gson.Gson;
@@ -50,6 +51,8 @@ public class UpdatePasswordActivity extends AppCompatActivity {
         sp = this.getSharedPreferences(ConfigUtil.KEY_LOGIN_AUTO, MODE_PRIVATE);
         dialog = new ShapeLoadingDialog(UpdatePasswordActivity.this);
         dialog.setLoadingText("正在加载...");
+        MyActivityManager manager = MyActivityManager.getInstance();
+        manager.pushOneActivity(this);
     }
 
     @OnClick({R.id.submit_bt, R.id.back_ib})

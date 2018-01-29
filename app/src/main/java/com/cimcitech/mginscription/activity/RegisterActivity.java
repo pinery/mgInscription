@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.cimcitech.mginscription.R;
 import com.cimcitech.mginscription.model.ResultVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
+import com.cimcitech.mginscription.utils.MyActivityManager;
 import com.cimcitech.mginscription.utils.ToastUtil;
 import com.cimcitech.mginscription.widget.ShapeLoadingDialog;
 import com.google.gson.Gson;
@@ -54,6 +55,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
+        MyActivityManager manager = MyActivityManager.getInstance();
+        manager.pushOneActivity(this);
         sp = this.getSharedPreferences(ConfigUtil.KEY_LOGIN_AUTO, MODE_PRIVATE);
         dialog = new ShapeLoadingDialog(RegisterActivity.this);
         dialog.setLoadingText("正在加载...");

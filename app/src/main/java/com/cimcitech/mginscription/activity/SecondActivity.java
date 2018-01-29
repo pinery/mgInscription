@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.cimcitech.mginscription.R;
+import com.cimcitech.mginscription.utils.MyActivityManager;
 import com.uuzuche.lib_zxing.activity.CaptureFragment;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
@@ -23,6 +24,8 @@ public class SecondActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+        MyActivityManager manager = MyActivityManager.getInstance();
+        manager.pushOneActivity(this);
         captureFragment = new CaptureFragment();
         // 为二维码扫描界面设置定制化界面
         CodeUtils.setFragmentArgs(captureFragment, R.layout.my_camera);

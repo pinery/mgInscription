@@ -1,5 +1,6 @@
 package com.cimcitech.mginscription.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import com.cimcitech.mginscription.model.DeviceDSumInfoVo;
 import com.cimcitech.mginscription.model.ResultVo;
 import com.cimcitech.mginscription.model.StatisticsByDayVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
+import com.cimcitech.mginscription.utils.MyActivityManager;
 import com.cimcitech.mginscription.utils.ToastUtil;
 import com.cimcitech.mginscription.widget.ShapeLoadingDialog;
 import com.google.gson.Gson;
@@ -78,6 +80,8 @@ public class StatisticsFragment extends Fragment {
     }
 
     public void initView() {
+        MyActivityManager manager = MyActivityManager.getInstance();
+        manager.pushOneActivity(getActivity());
         getStatisticsByDayData();//获取柱状图的数据
         deviceNumTv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,6 +193,7 @@ public class StatisticsFragment extends Fragment {
         chart.setZoomType(ZoomType.HORIZONTAL);
     }
 
+    @SuppressLint("SetTextI18n")
     private void showContactUsPopWin(Context context, final List<StatisticsByDayVo.DataBean.InfoBean> infoBeans) {
         LayoutInflater inflater = LayoutInflater.from(context);
         // 引入窗口配置文件
@@ -219,8 +224,8 @@ public class StatisticsFragment extends Fragment {
                 StatisticsByDayVo.DataBean.InfoBean infoBean = adapter.getAll().get(i);
                 deviceNumTv.setText(infoBean.getDev_num());
                 sumTimeTv.setText(infoBean.getSumTime() + "");
-                sumMakeNumTv.setText(infoBean.getSumMakeNum() + "");
-                productivityTv.setText(infoBean.getProductivity() != null ? infoBean.getProductivity() : "-");
+                sumMakeNumTv.setText(infoBean.getCountMakeNum() + "");
+                productivityTv.setText(infoBean.getProductivity());
                 pop.dismiss();
             }
         });
@@ -245,6 +250,7 @@ public class StatisticsFragment extends Fragment {
                                 dialog.dismiss();
                             }
 
+                            @SuppressLint("SetTextI18n")
                             @Override
                             public void onResponse(String response, int id) {
                                 Gson gson = new Gson();
@@ -258,8 +264,8 @@ public class StatisticsFragment extends Fragment {
                                         StatisticsByDayVo.DataBean.InfoBean info = dayVo.getData().getInfo().get(0);//默认的统计
                                         deviceNumTv.setText(info.getDev_num());
                                         sumTimeTv.setText(info.getSumTime() + "");
-                                        sumMakeNumTv.setText(info.getSumMakeNum() + "");
-                                        productivityTv.setText(info.getProductivity() != null ? info.getProductivity() : "-");
+                                        sumMakeNumTv.setText(info.getCountMakeNum() + "");
+                                        productivityTv.setText(info.getProductivity() + "");
                                     }
                                 } else if (resultVo.getData().getCode() == 2) {//登录超时
                                     ToastUtil.showToast("登录超时，请重新登录");

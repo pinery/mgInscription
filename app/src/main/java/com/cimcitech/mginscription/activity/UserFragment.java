@@ -22,6 +22,7 @@ import com.cimcitech.mginscription.model.DeviceVo;
 import com.cimcitech.mginscription.model.ResultVo;
 import com.cimcitech.mginscription.model.UserInfoVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
+import com.cimcitech.mginscription.utils.MyActivityManager;
 import com.cimcitech.mginscription.utils.ToastUtil;
 import com.cimcitech.mginscription.widget.ShapeLoadingDialog;
 import com.google.gson.Gson;
@@ -165,6 +166,8 @@ public class UserFragment extends Fragment {
     }
 
     private void initView() {
+        MyActivityManager manager = MyActivityManager.getInstance();
+        manager.pushOneActivity(getActivity());
         dialog = new ShapeLoadingDialog(getActivity());
         dialog.setLoadingText("正在加载数据...");
     }
