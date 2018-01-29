@@ -62,9 +62,9 @@ public class DataAxisXAdapter extends BaseAdapter {
             wrapper.itemNumTv.setText("" + (position + 1));
             wrapper.itemValueTv.setText(item.get(0));
             if (item.get(1).equals("1")) {
-                wrapper.itemCb.setImageDrawable(ContextCompat.getDrawable(inflater.getContext(), R.mipmap.check_on_icon));
-            } else if (item.get(1).equals("0"))
                 wrapper.itemCb.setImageDrawable(ContextCompat.getDrawable(inflater.getContext(), R.mipmap.check_off_icon));
+            } else if (item.get(1).equals("0"))
+                wrapper.itemCb.setImageDrawable(ContextCompat.getDrawable(inflater.getContext(), R.mipmap.check_on_icon));
         }
         return convertView;
     }
