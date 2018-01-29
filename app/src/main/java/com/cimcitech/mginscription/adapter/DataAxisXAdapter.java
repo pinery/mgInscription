@@ -1,11 +1,13 @@
 package com.cimcitech.mginscription.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cimcitech.mginscription.R;
@@ -60,9 +62,9 @@ public class DataAxisXAdapter extends BaseAdapter {
             wrapper.itemNumTv.setText("" + (position + 1));
             wrapper.itemValueTv.setText(item.get(0));
             if (item.get(1).equals("1")) {
-                wrapper.itemCb.setChecked(true);
+                wrapper.itemCb.setImageDrawable(ContextCompat.getDrawable(inflater.getContext(), R.mipmap.check_on_icon));
             } else if (item.get(1).equals("0"))
-                wrapper.itemCb.setChecked(false);
+                wrapper.itemCb.setImageDrawable(ContextCompat.getDrawable(inflater.getContext(), R.mipmap.check_off_icon));
         }
         return convertView;
     }
@@ -73,7 +75,7 @@ public class DataAxisXAdapter extends BaseAdapter {
         @BindView(R.id.item_value_tv)
         TextView itemValueTv;
         @BindView(R.id.item_cb)
-        CheckBox itemCb;
+        ImageView itemCb;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

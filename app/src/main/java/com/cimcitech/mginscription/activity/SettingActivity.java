@@ -88,7 +88,8 @@ public class SettingActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick({R.id.back_ib, R.id.out_login_bt, R.id.user_password_tv, R.id.nickname_tv, R.id.about_view})
+    @OnClick({R.id.back_ib, R.id.out_login_bt, R.id.user_password_tv, R.id.nickname_tv, R.id.about_view
+            , R.id.update_version_view})
     public void onclick(View view) {
         switch (view.getId()) {
             case R.id.back_ib:
@@ -108,6 +109,9 @@ public class SettingActivity extends AppCompatActivity {
                 break;
             case R.id.about_view:
                 startActivity(new Intent(SettingActivity.this, AboutActivity.class));
+                break;
+            case R.id.update_version_view:
+                ToastUtil.showToast("当前版本已经是最新版本");
                 break;
         }
     }

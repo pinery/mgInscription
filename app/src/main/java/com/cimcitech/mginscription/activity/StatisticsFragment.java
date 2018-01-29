@@ -225,7 +225,7 @@ public class StatisticsFragment extends Fragment {
                 deviceNumTv.setText(infoBean.getDev_num());
                 sumTimeTv.setText(infoBean.getSumTime() + "");
                 sumMakeNumTv.setText(infoBean.getCountMakeNum() + "");
-                productivityTv.setText(infoBean.getProductivity());
+                productivityTv.setText(infoBean.getProductivity() + "");
                 pop.dismiss();
             }
         });
