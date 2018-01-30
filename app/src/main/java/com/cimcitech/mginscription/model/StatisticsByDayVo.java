@@ -11,7 +11,7 @@ public class StatisticsByDayVo {
 
     /**
      * ret : 200
-     * data : {"code":1,"returnmsg":"success","info":[{"id":"16","dev_num":"B07070099","countmakenum":"13","work_time":213,"countMakeNum":24,"Productivity":11,"sumTime":213}]}
+     * data : {"code":1,"returnmsg":"success","info":[{"id":"16","dev_num":"B07070099","countmakenum":"56","work_time":992,"run_time":2942,"countMakeNum":67,"Productivity":7,"sumTime":992}]}
      * msg :
      */
 
@@ -47,7 +47,7 @@ public class StatisticsByDayVo {
         /**
          * code : 1
          * returnmsg : success
-         * info : [{"id":"16","dev_num":"B07070099","countmakenum":"13","work_time":213,"countMakeNum":24,"Productivity":11,"sumTime":213}]
+         * info : [{"id":"16","dev_num":"B07070099","countmakenum":"56","work_time":992,"run_time":2942,"countMakeNum":67,"Productivity":7,"sumTime":992}]
          */
 
         private int code;
@@ -82,17 +82,19 @@ public class StatisticsByDayVo {
             /**
              * id : 16
              * dev_num : B07070099
-             * countmakenum : 13
-             * work_time : 213
-             * countMakeNum : 24
-             * Productivity : 11
-             * sumTime : 213
+             * countmakenum : 56
+             * work_time : 992
+             * run_time : 2942
+             * countMakeNum : 67
+             * Productivity : 7
+             * sumTime : 992
              */
 
             private String id;
             private String dev_num;
             private String countmakenum;
             private int work_time;
+            private int run_time;
             private int countMakeNum;
             private int Productivity;
             private int sumTime;
@@ -127,6 +129,14 @@ public class StatisticsByDayVo {
 
             public void setWork_time(int work_time) {
                 this.work_time = work_time;
+            }
+
+            public int getRun_time() {
+                return run_time;
+            }
+
+            public void setRun_time(int run_time) {
+                this.run_time = run_time;
             }
 
             public int getCountMakeNum() {

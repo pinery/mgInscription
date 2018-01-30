@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BadgeItem;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -13,6 +15,7 @@ import com.cimcitech.mginscription.activity.DataFragment;
 import com.cimcitech.mginscription.activity.RealTimeFragment;
 import com.cimcitech.mginscription.activity.StatisticsFragment;
 import com.cimcitech.mginscription.activity.UserFragment;
+import com.cimcitech.mginscription.utils.MyActivityManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     private StatisticsFragment statisticsFragment;
     private DataFragment dataFragment;
     private UserFragment userFragment;
+    private MyActivityManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
 
     /*初始化底部导航栏*/
     private void initBottomNavBar() {
+        manager = MyActivityManager.getInstance();
+        manager.pushOneActivity(this);
+
         bottomNavigationBarContainer.setAutoHideEnabled(false);//自动隐藏
         bottomNavigationBarContainer.setMode(BottomNavigationBar.MODE_FIXED);
         bottomNavigationBarContainer.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
@@ -141,5 +148,29 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationB
     @Override
     public void onTabReselected(int position) {
 
+    }
+
+    //退出时的时间
+    private long mExitTime;
+
+    //对返回键进行监听
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            exit();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void exit() {
+        if ((System.currentTimeMillis() - mExitTime) > 2000) {
+            Toast.makeText(MainActivity.this, "再按一次退出", Toast.LENGTH_SHORT).show();
+            mExitTime = System.currentTimeMillis();
+        } else {
+            finish();
+            System.exit(0);
+            manager.finishAllActivity();
+        }
     }
 }
