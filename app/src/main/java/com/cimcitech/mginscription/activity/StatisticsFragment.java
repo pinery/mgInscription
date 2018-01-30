@@ -5,10 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,6 +28,7 @@ import com.cimcitech.mginscription.model.StatisticsByDayVo;
 import com.cimcitech.mginscription.utils.ConfigUtil;
 import com.cimcitech.mginscription.utils.MyActivityManager;
 import com.cimcitech.mginscription.utils.ToastUtil;
+import com.cimcitech.mginscription.widget.CustomScrollView;
 import com.cimcitech.mginscription.widget.ShapeLoadingDialog;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -63,11 +68,15 @@ public class StatisticsFragment extends Fragment {
     TextView sumMakeNumTv;
     @BindView(R.id.productivity_tv)
     TextView productivityTv;
+    @BindView(R.id.scrollView)
+    CustomScrollView scrollView;
 
     private Unbinder unbinder;
     private ColumnChartData columnData;
     private ShapeLoadingDialog dialog;
     private PopupWindow pop;
+    private Handler uiHandler = null;
+    private final int REQUEST_RESULT = 1000;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,6 +84,7 @@ public class StatisticsFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         dialog = new ShapeLoadingDialog(getActivity());
         dialog.setLoadingText("正在加载...");
+        initHandler();
         initView();
         return view;
     }
@@ -83,6 +93,7 @@ public class StatisticsFragment extends Fragment {
         MyActivityManager manager = MyActivityManager.getInstance();
         manager.pushOneActivity(getActivity());
         getStatisticsByDayData();//获取柱状图的数据
+        scrollView.setOnRefreshListener(new setPullRefreshListener());
         deviceNumTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,6 +101,48 @@ public class StatisticsFragment extends Fragment {
                     pop.showAtLocation(view, Gravity.CENTER, 0, 0);
             }
         });
+    }
+
+    public void initHandler() {
+        uiHandler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message message) {
+                switch (message.what) {
+                    case REQUEST_RESULT:// 显示加载中....
+                        getStatisticsByDayData();
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    class setPullRefreshListener implements CustomScrollView.OnRefreshListener {
+
+        @Override
+        public void onRefresh() {
+            new MyTask().execute();//下拉刷新
+        }
+    }
+
+    private class MyTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Thread.sleep(1000);
+                uiHandler.sendEmptyMessage(REQUEST_RESULT);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            scrollView.onRefreshComplete();
+        }
     }
 
     private void getDeviceDSumInfoData(String deviceNum) {
@@ -191,7 +244,32 @@ public class StatisticsFragment extends Fragment {
         chart.setColumnChartData(columnData);
         chart.setValueSelectionEnabled(true);
         chart.setZoomType(ZoomType.HORIZONTAL);
+        chart.setOnTouchListener(touchListener);
     }
+
+    View.OnTouchListener touchListener = new View.OnTouchListener() {
+        float ratio = 1.8f; //水平和竖直方向滑动的灵敏度,偏大是水平方向灵敏
+        float x0 = 0f;
+        float y0 = 0f;
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    x0 = event.getX();
+                    y0 = event.getY();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    float dx = Math.abs(event.getX() - x0);
+                    float dy = Math.abs(event.getY() - y0);
+                    x0 = event.getX();
+                    y0 = event.getY();
+                    scrollView.requestDisallowInterceptTouchEvent(dx * ratio > dy);
+                    break;
+            }
+            return false;
+        }
+    };
 
     @SuppressLint("SetTextI18n")
     private void showContactUsPopWin(Context context, final List<StatisticsByDayVo.DataBean.InfoBean> infoBeans) {

@@ -206,7 +206,8 @@ public class RealTimeFragment extends Fragment {
 
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                sumTimeLayout.setVisibility(View.INVISIBLE);
+                                if (info != null && info.getDevice_num() != null && !info.getDevice_num().equals(""))
+                                    getUsersDeviceSetMData(info);
                             }
                         })
                         .setNegativeButton("取消", null).create().show();
@@ -402,7 +403,7 @@ public class RealTimeFragment extends Fragment {
     //设置页面数据
     public void setXmlViewData(DeviceInfoVo.DataBean.InfoBean info) {
         if (info != null) {
-            workTimeTv.setText(info.getWork_time() + "h");
+            workTimeTv.setText(info.getSumTime() + "h");//..
             if (info.getStartTime() != null) {
                 String[] time = info.getStartTime().split(" ");
                 if (time.length > 0 && time.length == 2) {
@@ -418,7 +419,7 @@ public class RealTimeFragment extends Fragment {
                 maintenanceTimeTv.setText("距离下次维保还有" + (5000 - info.getSumTime()) + "小时");
             } else
                 sumTimeLayout.setVisibility(View.INVISIBLE);
-            sumTimeTv.setText(info.getSumTime() + "");
+            sumTimeTv.setText(info.getWork_time() + "");//..
             makenumTv.setText(info.getCountmakenum() != null ? info.getCountmakenum() : "-");
         }
     }
@@ -427,5 +428,67 @@ public class RealTimeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+
+    //维保
+    //用户获取设备信息
+    private void setUsersDeviceSetM(String data, String sign) {
+        OkHttpUtils
+                .post()
+                .url(ConfigUtil.IP)
+                .addParams("service", "UsersDevice.SetMaintenanceNum")
+                .addParams("userDeviceInfo", data)
+                .addParams("user_id", ConfigUtil.loginInfo.getRegister_id())
+                .addParams("token", ConfigUtil.loginInfo.getToken())
+                .addParams("sign", sign)
+                .build()
+                .execute(
+                        new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int id) {
+                                ToastUtil.showNetError();
+                                dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onResponse(String response, int id) {
+                                Gson gson = new Gson();
+                                ResultVo resultVo = gson.fromJson(response, ResultVo.class);
+                                dialog.dismiss();
+                                if (resultVo != null && resultVo.getRet() == 200)
+                                    if (resultVo.getData() != null)
+                                        if (resultVo.getData().getCode() == 1) {//正常返回
+                                            getUserDeviceInfoData();//刷新数据，还原正确维保时间
+                                            ToastUtil.showToast(resultVo.getData().getReturnmsg());
+                                        } else if (resultVo.getData().getCode() == 2) {//登录超时
+                                            ToastUtil.showToast("登录超时，请重新登录");
+                                            ConfigUtil.isLogin = false;
+                                            ConfigUtil.isOutLogin = true;
+                                            startActivity(new Intent(getActivity(), LoginActivity.class));
+                                        } else
+                                            ToastUtil.showToast(resultVo.getData().getReturnmsg());
+                            }
+                        }
+                );
+    }
+
+    class UsersDeviceSetM {
+        String device_num;
+        String time;
+
+        public UsersDeviceSetM(String device_num, String time) {
+            this.device_num = device_num;
+            this.time = time;
+        }
+    }
+
+    public void getUsersDeviceSetMData(DeviceVo.DataBean.InfoBean info) {
+        String data = new Gson().toJson(new UsersDeviceSetM(info.getDevice_num(), ConfigUtil.GET_TIME()));
+        Map map = new HashMap();
+        map.put("device_num", info.getDevice_num());
+        map.put("time", ConfigUtil.GET_TIME());
+        String sign = ConfigUtil.GET_SIGN(map);
+        setUsersDeviceSetM(data, sign);
     }
 }

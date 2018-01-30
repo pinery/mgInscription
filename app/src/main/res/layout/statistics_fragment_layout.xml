@@ -20,185 +20,198 @@
         android:layout_height="0.2dip"
         android:background="@color/alpha30" />
 
-    <LinearLayout
+    <com.cimcitech.mginscription.widget.CustomScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableLeft="@mipmap/chart_color_1"
-                android:drawablePadding="5dip"
-                android:padding="10dip"
-                android:text="日产品排名（CPS）"
-                android:textColor="@color/black6"
-                android:textSize="14sp" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableLeft="@mipmap/chart_color_2"
-                android:drawablePadding="5dip"
-                android:padding="10dip"
-                android:text="工作时间（H）"
-                android:textColor="@color/black6"
-                android:textSize="14sp" />
-        </FrameLayout>
-    </LinearLayout>
-
-    <lecho.lib.hellocharts.view.ColumnChartView
-        android:id="@+id/chart"
-        android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:layout_marginLeft="5dip"
-        android:layout_marginRight="5dip"
-        android:layout_marginTop="5dip"
-        android:background="#f5f5f5" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dip"
-        android:layout_marginRight="15dip"
-        android:layout_marginTop="20dip"
-        android:background="@drawable/layout_bg_white_ffffff"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/device_num_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/layout_bg_white_ffffff"
-            android:drawableLeft="@mipmap/icon_top_list"
-            android:drawablePadding="8dip"
-            android:drawableRight="@mipmap/icon_drop_down"
-            android:gravity="center_vertical"
-            android:padding="8dip"
-            android:textColor="@color/black6"
-            android:textSize="14sp" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="0.5dip"
-            android:background="@color/alpha30" />
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dip"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/sumTime_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="10dip"
-                    android:text="-"
-                    android:textColor="#66658d"
-                    android:textSize="22sp" />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="运行总时长"
-                    android:textColor="@color/black6"
-                    android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawableLeft="@mipmap/chart_color_1"
+                        android:drawablePadding="5dip"
+                        android:padding="10dip"
+                        android:text="日产品排名（CPS）"
+                        android:textColor="@color/black6"
+                        android:textSize="14sp" />
+                </FrameLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="（H）"
-                    android:textColor="@color/black6"
-                    android:textSize="14sp" />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawableLeft="@mipmap/chart_color_2"
+                        android:drawablePadding="5dip"
+                        android:padding="10dip"
+                        android:text="运行时间（min）"
+                        android:textColor="@color/black6"
+                        android:textSize="14sp" />
+                </FrameLayout>
             </LinearLayout>
 
+            <lecho.lib.hellocharts.view.ColumnChartView
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="5dip"
+                android:layout_marginTop="5dip"
+                android:background="#f5f5f5" />
+
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip"
+                android:layout_marginTop="20dip"
+                android:background="@drawable/layout_bg_white_ffffff"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/sumMakeNum_tv"
+                    android:id="@+id/device_num_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="10dip"
-                    android:text="-"
-                    android:textColor="#66658d"
-                    android:textSize="22sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="生产总量"
+                    android:background="@drawable/layout_bg_white_ffffff"
+                    android:drawableLeft="@mipmap/icon_top_list"
+                    android:drawablePadding="8dip"
+                    android:drawableRight="@mipmap/icon_drop_down"
+                    android:gravity="center_vertical"
+                    android:padding="8dip"
                     android:textColor="@color/black6"
                     android:textSize="14sp" />
 
-                <TextView
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="（件）"
-                    android:textColor="@color/black6"
-                    android:textSize="14sp" />
-            </LinearLayout>
+                    android:layout_height="0.5dip"
+                    android:background="@color/alpha30" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/productivity_tv"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="10dip"
-                    android:text="-"
-                    android:textColor="#66658d"
-                    android:textSize="22sp" />
+                    android:layout_height="100dip"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="工作效率"
-                    android:textColor="@color/black6"
-                    android:textSize="14sp" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="（%）"
-                    android:textColor="@color/black6"
-                    android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/sumTime_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="10dip"
+                            android:text="-"
+                            android:textColor="#66658d"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="工作小时"
+                            android:textColor="@color/black6"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="（H）"
+                            android:textColor="@color/black6"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/sumMakeNum_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="10dip"
+                            android:text="-"
+                            android:textColor="#66658d"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="总产量"
+                            android:textColor="@color/black6"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="（CPS）"
+                            android:textColor="@color/black6"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/productivity_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="10dip"
+                            android:text="-"
+                            android:textColor="#66658d"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="工作效率"
+                            android:textColor="@color/black6"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="（%）"
+                            android:textColor="@color/black6"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </com.cimcitech.mginscription.widget.CustomScrollView>
 </LinearLayout>

@@ -69,7 +69,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="10dip"
-                        android:text="工作小时数"
+                        android:text="工作小时"
                         android:textColor="#c1c5dc"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -133,7 +133,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="（h）"
+                        android:text="（min）"
                         android:textColor="#64698f"
                         android:textSize="14sp" />
 
@@ -175,7 +175,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="10dip"
-                        android:text="生成总量"
+                        android:text="总产量"
                         android:textColor="@color/black6"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -222,7 +222,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="机器日产量"
+                            android:text="日产量"
                             android:textColor="@color/black6"
                             android:textSize="14sp" />
 
@@ -296,7 +296,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="（PH/%）"
+                            android:text="（RH）"
                             android:textColor="@color/black6"
                             android:textSize="14sp" />
                     </LinearLayout>
