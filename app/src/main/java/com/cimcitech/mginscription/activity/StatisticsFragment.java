@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -77,7 +78,6 @@ public class StatisticsFragment extends Fragment {
     private PopupWindow pop;
     private Handler uiHandler = null;
     private final int REQUEST_RESULT = 1000;
-    private String deviceNumber = "";//记录用户选中的设备
     private StatisticsByDayVo.DataBean.InfoBean infoBean;
 
     @Override
@@ -89,6 +89,36 @@ public class StatisticsFragment extends Fragment {
         initHandler();
         initView();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.e("StatisticsFragment", "onStart......");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("StatisticsFragment", "onResume......");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e("StatisticsFragment", "onPause......");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e("StatisticsFragment", "onStop......");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("StatisticsFragment", "onDestroy......");
     }
 
     public void initView() {
@@ -306,7 +336,7 @@ public class StatisticsFragment extends Fragment {
                 sumTimeTv.setText(infoBean.getSumTime() + "");
                 sumMakeNumTv.setText(infoBean.getCountMakeNum() + "");
                 productivityTv.setText(infoBean.getProductivity() + "");
-                deviceNumber = infoBean.getDev_num();
+                //ConfigUtil.deviceNum = infoBean.getDev_num();
                 pop.dismiss();
             }
         });
@@ -342,9 +372,9 @@ public class StatisticsFragment extends Fragment {
                                     if (dayVo.getData() != null && dayVo.getData().getInfo().size() > 0) {
                                         generateColumnData(dayVo.getData().getInfo());
                                         showContactUsPopWin(getActivity(), dayVo.getData().getInfo());
-                                        if (!deviceNumber.equals("")) {
+                                        if (!ConfigUtil.deviceNum.equals("")) {
                                             for (int i = 0; i < dayVo.getData().getInfo().size(); i++)
-                                                if (dayVo.getData().getInfo().get(i).getDev_num().equals(deviceNumber))
+                                                if (dayVo.getData().getInfo().get(i).getDev_num().equals(ConfigUtil.deviceNum))
                                                     infoBean = dayVo.getData().getInfo().get(i);
                                             if (infoBean == null) //如果equals没有还是给默认第一个，以免报错
                                                 infoBean = dayVo.getData().getInfo().get(0);//默认的统计

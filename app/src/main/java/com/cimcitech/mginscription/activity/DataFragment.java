@@ -47,6 +47,9 @@ import okhttp3.Call;
  * Created by dapineapple on 2017/12/27.
  */
 
+/**
+ * 数据页面
+ */
 public class DataFragment extends Fragment {
 
     @BindView(R.id.axis_x_tv)

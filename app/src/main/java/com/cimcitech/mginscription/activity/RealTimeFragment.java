@@ -95,7 +95,6 @@ public class RealTimeFragment extends Fragment {
     private DeviceVo.DataBean.InfoBean info; //默认显示该设备的数据
     private Handler uiHandler = null;
     private final int REQUEST_RESULT = 1000;
-    private String deviceNumber = "";//记录用户选中的设备
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -270,7 +269,7 @@ public class RealTimeFragment extends Fragment {
                 info = infoVo;
                 popDeviceNum.setText(info.getDevice_num());
                 deviceNumTv.setText(info.getDevice_num());
-                deviceNumber = info.getDevice_num();
+                ConfigUtil.deviceNum = info.getDevice_num();
                 getDeviceInfoData();
                 pop.dismiss();
             }
@@ -307,9 +306,10 @@ public class RealTimeFragment extends Fragment {
                                             deviceVo = gson.fromJson(response, DeviceVo.class);
                                             if (deviceVo.getData() != null && deviceVo.getData().getInfo() != null)
                                                 if (deviceVo.getData().getInfo().size() > 0) {
-                                                    if (!"".equals(deviceNumber)) {
+                                                    if (!"".equals(ConfigUtil.deviceNum)) {
                                                         for (int i = 0; i < deviceVo.getData().getInfo().size(); i++)
-                                                            if (deviceVo.getData().getInfo().get(i).getDevice_num().equals(deviceNumber))
+                                                            if (deviceVo.getData().getInfo().get(i).getDevice_num()
+                                                                    .equals(ConfigUtil.deviceNum))
                                                                 info = deviceVo.getData().getInfo().get(i);
                                                         if (info == null)
                                                             info = deviceVo.getData().getInfo().get(0);
