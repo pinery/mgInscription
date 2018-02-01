@@ -36,7 +36,6 @@
                 android:layout_marginRight="35dip"
                 android:background="@null"
                 android:hint="请输入用户名"
-                android:text="18927436372"
                 android:singleLine="true"
                 android:textColor="@color/black6"
                 android:textSize="15sp" />
@@ -76,7 +75,6 @@
                 android:layout_marginRight="35dip"
                 android:background="@null"
                 android:hint="请输入密码"
-                android:text="Aa123456"
                 android:inputType="textPassword"
                 android:singleLine="true"
                 android:textColor="@color/black6"

@@ -42,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
     TextView updatePasswordTv;
     private SharedPreferences sp;
     private ShapeLoadingDialog dialog;
+    //18927436372
+    //Aa123456
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

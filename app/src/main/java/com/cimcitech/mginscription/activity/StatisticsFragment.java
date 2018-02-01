@@ -344,7 +344,7 @@ public class StatisticsFragment extends Fragment {
                                         showContactUsPopWin(getActivity(), dayVo.getData().getInfo());
                                         if (!deviceNumber.equals("")) {
                                             for (int i = 0; i < dayVo.getData().getInfo().size(); i++)
-                                                if (dayVo.getData().getInfo().get(i).equals(deviceNumber))
+                                                if (dayVo.getData().getInfo().get(i).getDev_num().equals(deviceNumber))
                                                     infoBean = dayVo.getData().getInfo().get(i);
                                             if (infoBean == null) //如果equals没有还是给默认第一个，以免报错
                                                 infoBean = dayVo.getData().getInfo().get(0);//默认的统计
