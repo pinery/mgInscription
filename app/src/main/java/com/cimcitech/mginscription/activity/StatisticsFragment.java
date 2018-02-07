@@ -49,6 +49,7 @@ import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Column;
 import lecho.lib.hellocharts.model.ColumnChartData;
 import lecho.lib.hellocharts.model.SubcolumnValue;
+import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.ColumnChartView;
 import okhttp3.Call;
 
@@ -272,11 +273,14 @@ public class StatisticsFragment extends Fragment {
         columnData = new ColumnChartData(columns);
         columnData.setAxisXBottom(new Axis(axisValues).setHasLines(true));
         //设置轴标签的最大字符数，最小值0，最大值32。
-        columnData.setAxisYLeft(new Axis().setHasLines(true).setMaxLabelChars(3));
+        columnData.setAxisYLeft(new Axis().setHasLines(true).setMaxLabelChars(5));//0~10000
         chart.setColumnChartData(columnData);
         chart.setValueSelectionEnabled(true);
         chart.setZoomType(ZoomType.HORIZONTAL);
+        //设置他的缩放级别
+        Viewport tempViewport = new Viewport(0, chart.getMaximumViewport().height(), 5, 0);
         chart.setOnTouchListener(touchListener);
+        chart.setCurrentViewport(tempViewport);
     }
 
     View.OnTouchListener touchListener = new View.OnTouchListener() {
