@@ -277,10 +277,7 @@ public class StatisticsFragment extends Fragment {
         chart.setColumnChartData(columnData);
         chart.setValueSelectionEnabled(true);
         chart.setZoomType(ZoomType.HORIZONTAL);
-        //设置他的缩放级别
-        Viewport tempViewport = new Viewport(0, chart.getMaximumViewport().height(), 5, 0);
         chart.setOnTouchListener(touchListener);
-        chart.setCurrentViewport(tempViewport);
     }
 
     View.OnTouchListener touchListener = new View.OnTouchListener() {
