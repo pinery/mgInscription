@@ -37,7 +37,7 @@
         <activity android:name=".activity.BaseActivity" />
         <activity android:name=".activity.SecondActivity" />
         <activity android:name=".activity.UpdatePasswordActivity" />
-        <activity android:name=".activity.AboutActivity"></activity>
+        <activity android:name=".activity.AboutActivity"/>
     </application>
 
 </manifest>
